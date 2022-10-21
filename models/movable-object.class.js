@@ -5,13 +5,6 @@ class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
 
-  offset = {
-    top: 1,
-    right: 1,
-    bottom: 1,
-    left: 1,
-  };
-
   constructor() {
     super();
   }

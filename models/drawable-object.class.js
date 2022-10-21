@@ -9,6 +9,14 @@ class DrawableObject {
   speedY = 0;
   acceleration = 0.05;
   attack = 0;
+
+  offset = {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  };
+
   /**
    * loads a image by its relative path
    * @param {string} path the relative path to the image

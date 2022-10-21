@@ -4,6 +4,8 @@ class Character extends MovableObject {
   world;
   isPaused = false;
   dead = 0;
+  collectedCoins = 0;
+  collectedPoison = 0;
 
   offset_frame = {};
 
@@ -25,7 +27,6 @@ class Character extends MovableObject {
   }
 
   animate() {
-    this.swiming_sound.pause();
     setInterval(() => {
       if (
         (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) ||
@@ -97,6 +98,21 @@ class Character extends MovableObject {
         this.attack = 0;
       }
     }, 150);
+  }
+
+  collectCoin() {
+    this.collectedCoins += 20;
+    if (this.collectedCoins > 100) {
+      this.collectedCoins = 100;
+    } else {
+    }
+  }
+  collectPoison() {
+    this.collectedPoison += 20;
+    if (this.collectedPoison > 100) {
+      this.collectedPoison = 100;
+    } else {
+    }
   }
 
   IMAGES_SWIM = [

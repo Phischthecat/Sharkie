@@ -43,14 +43,41 @@ class World {
   }
 
   checkCollisions() {
+    this.isCollidingWithEnemies();
+    this.isCollidingWithCollectables();
+    // this.shootableObjects.forEach((bubble) => {});
+  }
+
+  isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar[0].setPercentage(this.character.energy);
       }
     });
+  }
 
-    // this.shootableObjects.forEach((bubble) => {});
+  isCollidingWithCollectables() {
+    this.level.coins.forEach((coin, index) => {
+      if (this.character.isColliding(coin, index)) {
+        this.character.collectCoin();
+        this.level.coins[index].collected = true;
+        setTimeout(() => {
+          this.level.coins.splice(index, 1);
+        }, 70);
+        this.statusBar[1].setPercentage(this.character.collectedCoins);
+      }
+    });
+    this.level.poisons.forEach((poison, index) => {
+      if (this.character.isColliding(poison, index)) {
+        this.character.collectPoison();
+        this.level.poisons[index].collected = true;
+        setTimeout(() => {
+          this.level.poisons.splice(index, 1);
+        }, 70);
+        this.statusBar[2].setPercentage(this.character.collectedPoison);
+      }
+    });
   }
 
   draw() {
@@ -62,7 +89,8 @@ class World {
     this.addToMap(this.character); //fügt den character hinzu
     this.addObjectstoMap(this.level.enemies); //fügt die enemies hinzu
     this.addObjectstoMap(this.shootableObjects); //fügt die bubbles hinzu
-    this.addObjectstoMap(this.level.collectableObjects); //fügt die collectables hinzu
+    this.addObjectstoMap(this.level.coins); //fügt die collectables hinzu
+    this.addObjectstoMap(this.level.poisons); //fügt die collectables hinzu
     this.ctx.translate(-this.camera_x, 0); //fügt die backgroundObjects hinzu
     // Space for fixed objects
     this.addObjectstoMap(this.statusBar);
