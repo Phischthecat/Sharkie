@@ -1,6 +1,9 @@
 class Character extends MovableObject {
   speed = 5;
   swiming_sound = new Audio('audio/swim.mp3');
+  bubble_sound = new Audio('audio/bubble.mp3');
+  collectCoin_sound = new Audio('audio/coin.mp3');
+  collectPoisonBottle_sound = new Audio('audio/poison-bubble.mp3');
   world;
   isPaused = false;
   dead = 0;
@@ -90,6 +93,7 @@ class Character extends MovableObject {
           this.playAnimation(this.IMAGES_BUBBLETRAP);
           this.attack++;
         } else {
+          this.bubble_sound.play();
           this.attack = 0;
         }
       } else {

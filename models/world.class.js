@@ -51,27 +51,38 @@ class World {
   isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusBar[0].setPercentage(this.character.energy);
+        this.character.hit(0.5);
       }
+      console.log(this.character.energy);
+      this.statusBar[0].setPercentage(this.character.energy);
     });
   }
 
   isCollidingWithCollectables() {
+    this.collisionWithCoins();
+    this.collisionWithPoison();
+  }
+
+  collisionWithCoins() {
     this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin, index)) {
         this.character.collectCoin();
         this.level.coins[index].collected = true;
+        // this.character.collectCoin_sound.play();
         setTimeout(() => {
           this.level.coins.splice(index, 1);
-        }, 70);
+        }, 150);
         this.statusBar[1].setPercentage(this.character.collectedCoins);
       }
     });
+  }
+
+  collisionWithPoison() {
     this.level.poisons.forEach((poison, index) => {
       if (this.character.isColliding(poison, index)) {
         this.character.collectPoison();
         this.level.poisons[index].collected = true;
+        // this.character.collectPoisonBottle_sound.play();
         setTimeout(() => {
           this.level.poisons.splice(index, 1);
         }, 70);

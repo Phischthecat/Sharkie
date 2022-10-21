@@ -40,9 +40,9 @@ class CollectableObject extends DrawableObject {
   goUp() {
     setInterval(() => {
       if (this.collected) {
-        this.y -= 30;
+        this.y -= 40;
       }
-    }, 1000 / 60);
+    }, 75);
   }
 
   changeImagesByType(type) {
