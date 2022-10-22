@@ -36,12 +36,12 @@ class Pufferfish extends MovableObject {
   }
 
   changeImagesByType(type) {
-    if (type == 'orange') {
-      return this.IMAGES_ORANGE;
-    } else if (type == 'pink') {
+    if (type == 'pink') {
       return this.IMAGES_PINK;
     } else if (type == 'redblue') {
       return this.IMAGES_REDBLUE;
+    } else {
+      return this.IMAGES_ORANGE;
     }
   }
 

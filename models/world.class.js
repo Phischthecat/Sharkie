@@ -49,11 +49,12 @@ class World {
   }
 
   isCollidingWithEnemies() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+    this.level.enemies.forEach((enemy, index) => {
+      if (this.character.isColliding(enemy) && index != 0) {
         this.character.hit(0.5);
+      } else if (this.character.isColliding(enemy) && index == 0) {
+        this.character.hit(5);
       }
-      console.log(this.character.energy);
       this.statusBar[0].setPercentage(this.character.energy);
     });
   }

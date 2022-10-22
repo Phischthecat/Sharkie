@@ -4,6 +4,7 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
   lastHit = 0;
+  isKilled = false;
 
   constructor() {
     super();
@@ -31,6 +32,12 @@ class MovableObject extends DrawableObject {
     let timePassed = new Date().getTime() - this.lastHit; // Difference in ms
     timePassed = timePassed / 1000; //Difference in s
     return timePassed < 1.2;
+  }
+
+  changeDirection(time) {
+    setInterval(() => {
+      this.otherDirection = !this.otherDirection;
+    }, time);
   }
 
   isDead() {
