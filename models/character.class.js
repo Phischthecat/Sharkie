@@ -10,8 +10,6 @@ class Character extends MovableObject {
   collectedCoins = 0;
   collectedPoison = 0;
 
-  offset_frame = {};
-
   offset = {
     top: 120,
     right: 40,
@@ -24,6 +22,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_BUBBLETRAP);
+    this.loadImages(this.IMAGES_SLAP);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT_POISON);
     this.animate();
@@ -78,19 +77,23 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_HURT_POISON);
       } else if (
         this.world.keyboard.RIGHT ||
-        this.world.keyboard.D ||
         this.world.keyboard.LEFT ||
-        this.world.keyboard.A ||
         this.world.keyboard.UP ||
-        this.world.keyboard.W ||
-        this.world.keyboard.DOWN ||
-        this.world.keyboard.S
+        this.world.keyboard.DOWN
       ) {
         this.playAnimation(this.IMAGES_SWIM);
         this.isPaused = false;
       } else if (this.world.keyboard.SPACE || this.world.keyboard.E) {
         if (this.attack < 8) {
           this.playAnimation(this.IMAGES_BUBBLETRAP);
+          this.attack++;
+        } else {
+          this.bubble_sound.play();
+          this.attack = 0;
+        }
+      } else if (this.world.keyboard.Q) {
+        if (this.attack < this.IMAGES_SLAP.length) {
+          this.playAnimation(this.IMAGES_SLAP);
           this.attack++;
         } else {
           this.bubble_sound.play();
@@ -167,14 +170,22 @@ class Character extends MovableObject {
   ];
 
   IMAGES_BUBBLETRAP = [
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
-    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/1.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/2.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/3.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/4.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/5.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/6.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/7.png',
+  ];
+
+  IMAGES_SLAP = [
+    'img/1.Sharkie/4.Attack/Fin slap/1.png',
+    'img/1.Sharkie/4.Attack/Fin slap/4.png',
+    'img/1.Sharkie/4.Attack/Fin slap/5.png',
+    'img/1.Sharkie/4.Attack/Fin slap/6.png',
+    'img/1.Sharkie/4.Attack/Fin slap/7.png',
+    'img/1.Sharkie/4.Attack/Fin slap/8.png',
   ];
 
   IMAGES_DEAD = [

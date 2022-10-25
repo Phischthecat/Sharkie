@@ -1,30 +1,31 @@
 class Jellyfish extends MovableObject {
   height = 75;
   width = 75;
+  species;
 
   constructor(type) {
     super().loadImage(this.changeImagesByType(type)[0]);
     this.loadImages(this.changeImagesByType(type));
+    this.loadImages(this.changeImagesByTypeDEAD(type));
     this.x = 200 + Math.random() * 500; // erzeugt Zahl zwischen 200 bis 700
     this.y = 150 - this.height / 2; // Zahl zwischen 50 bis 350
-    this.speed = 0.15 + Math.random() * 0.35;
-    this.changeDirection(10000);
+    this.speed = 0.35;
+    this.species = 'Jellyfish ' + type;
+    this.changeDirection(12000);
     this.animate(type);
   }
 
   animate(type) {
-    if (this.isKilled) {
-      setInterval(() => {
+    setInterval(() => {
+      this.swim();
+    }, 1000 / 60);
+    setInterval(() => {
+      if (this.isKilled) {
+        this.playAnimation(this.changeImagesByTypeDEAD(type));
+      } else {
         this.playAnimation(this.changeImagesByType(type));
-      }, 175);
-    } else {
-      setInterval(() => {
-        this.swim();
-      }, 1000 / 60);
-      setInterval(() => {
-        this.playAnimation(this.changeImagesByType(type));
-      }, 175);
-    }
+      }
+    }, 175);
   }
 
   swim() {
@@ -42,8 +43,20 @@ class Jellyfish extends MovableObject {
       return this.IMAGES_PINK;
     } else if (type == 'yellow') {
       return this.IMAGES_YELLOW;
-    } else {
+    } else if (type == 'lila') {
       return this.IMAGES_LILA;
+    }
+  }
+
+  changeImagesByTypeDEAD(type) {
+    if (type == 'green') {
+      return this.IMAGES_GREEN_DEAD;
+    } else if (type == 'lila') {
+      return this.IMAGES_LILA_DEAD;
+    } else if (type == 'pink') {
+      return this.IMAGES_PINK_DEAD;
+    } else if (type == 'yellow') {
+      return this.IMAGES_YELLOW_DEAD;
     }
   }
 

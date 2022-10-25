@@ -1,4 +1,40 @@
 class Endboss extends MovableObject {
+  species;
+  world;
+  hadFirstContact = false;
+  i = 0;
+
+  constructor() {
+    super().loadImage(this.IMAGES_FLOATING[0]);
+    this.loadImages(this.IMAGES_INTRO);
+    this.loadImages(this.IMAGES_FLOATING);
+    this.height = 500;
+    this.width = 400;
+    this.species = 'endboss';
+    this.x = 2200;
+    this.y = -100;
+    this.animate();
+  }
+
+  animate() {
+    setInterval(() => {
+      if (this.i < 10) {
+        this.playAnimation(this.IMAGES_INTRO);
+      } else {
+        this.playAnimation(this.IMAGES_FLOATING);
+      }
+      this.i++;
+    }, 150);
+    setInterval(() => {
+      if (world) {
+        if (world.character.x > 1600 && !this.hadFirstContact) {
+          this.i = 0;
+          this.hadFirstContact = true;
+        }
+      }
+    }, 1000 / 60);
+  }
+
   IMAGES_INTRO = [
     'img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
     'img/2.Enemy/3 Final Enemy/1.Introduce/2.png',
@@ -26,38 +62,4 @@ class Endboss extends MovableObject {
     'img/2.Enemy/3 Final Enemy/2.floating/12.png',
     'img/2.Enemy/3 Final Enemy/2.floating/13.png',
   ];
-
-  world;
-  hadFirstContact = false;
-  i = 0;
-
-  constructor() {
-    super().loadImage(this.IMAGES_FLOATING[0]);
-    this.loadImages(this.IMAGES_INTRO);
-    this.loadImages(this.IMAGES_FLOATING);
-    this.height = 500;
-    this.width = 400;
-    this.x = 2200;
-    this.y = -100;
-    this.animate();
-  }
-
-  animate() {
-    setInterval(() => {
-      if (this.i < 10) {
-        this.playAnimation(this.IMAGES_INTRO);
-      } else {
-        this.playAnimation(this.IMAGES_FLOATING);
-      }
-      this.i++;
-    }, 150);
-    setInterval(() => {
-      if (world) {
-        if (world.character.x > 1600 && !this.hadFirstContact) {
-          this.i = 0;
-          this.hadFirstContact = true;
-        }
-      }
-    }, 1000 / 60);
-  }
 }

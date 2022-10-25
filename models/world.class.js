@@ -28,15 +28,18 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkShootObjects();
-    }, 150);
+      this.isPufferfishAgressive();
+    }, 125);
+    setInterval(() => {
+      this.createShootObjects();
+    }, 200);
   }
 
-  checkShootObjects() {
+  createShootObjects() {
     if (this.keyboard.SPACE && this.character.attack > 7) {
       let bubble = new ShootableObject(
-        this.character.x + 170,
-        this.character.y + 130
+        this.character.x + 155,
+        this.character.y + 135
       );
       this.shootableObjects.push(bubble);
     }
@@ -45,17 +48,76 @@ class World {
   checkCollisions() {
     this.isCollidingWithEnemies();
     this.isCollidingWithCollectables();
-    // this.shootableObjects.forEach((bubble) => {});
+    this.isBubbleCollidingWithEnemies();
+    this.isSlapCollidingWithEnemies();
+  }
+
+  isBubbleCollidingWithEnemies() {
+    this.shootableObjects.forEach((bubble, indexB) => {
+      this.level.enemies.forEach((enemy, indexE) => {
+        if (bubble.isColliding(enemy) && enemy.species.includes('Jellyfish')) {
+          this.shootableObjects.splice(indexB, 1);
+          this.killJellyfish(indexE);
+        } else if (bubble.isColliding(enemy)) {
+          this.shootableObjects.splice(indexB, 1);
+        }
+      });
+    });
+  }
+
+  isSlapCollidingWithEnemies() {
+    this.level.enemies.forEach((enemy, index) => {
+      if (
+        this.character.isInFrontOf(enemy, index) &&
+        this.level.enemies[index].species.includes('Pufferfish') &&
+        this.keyboard.Q
+      ) {
+        this.killPufferfish(index);
+      }
+    });
+  }
+
+  killJellyfish(index) {
+    this.level.enemies[index].isKilled = true;
+    this.level.enemies[index].applyUplift();
+    setTimeout(() => {
+      this.level.enemies.splice(index, 1);
+    }, 2500);
+  }
+
+  killPufferfish(index) {
+    this.level.enemies[index].isKilled = true;
+    setTimeout(() => {
+      this.level.enemies.splice(index, 1);
+    }, 2500);
   }
 
   isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
-      if (this.character.isColliding(enemy) && index != 0) {
-        this.character.hit(0.5);
-      } else if (this.character.isColliding(enemy) && index == 0) {
-        this.character.hit(5);
+      if (this.character.isColliding(enemy, index) && !this.isKilled) {
+        if (enemy.species == 'endboss') {
+          this.character.hit(5);
+        } else if (enemy.species.includes('Jellyfish')) {
+          this.character.hit(1.5);
+        } else if (enemy.species.includes('Pufferfish')) {
+          this.character.hit(0.5);
+        }
+      } else {
+        this.statusBar[0].setPercentage(this.character.energy);
       }
-      this.statusBar[0].setPercentage(this.character.energy);
+    });
+  }
+
+  isPufferfishAgressive() {
+    this.level.enemies.forEach((enemy) => {
+      if (
+        enemy.species.includes('Pufferfish') &&
+        this.character.isInFrontOf(enemy)
+      ) {
+        enemy.isAgressive = true;
+      } else {
+        enemy.isAgressive = false;
+      }
     });
   }
 

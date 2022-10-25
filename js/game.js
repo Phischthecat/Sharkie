@@ -26,23 +26,12 @@ window.addEventListener('keydown', (event) => {
   if (event.keyCode == 40) {
     keyboard.DOWN = true;
   }
-  if (event.keyCode == 65) {
-    keyboard.A = true;
-  }
-  if (event.keyCode == 68) {
-    keyboard.D = true;
-  }
+
   if (event.keyCode == 69) {
     keyboard.E = true;
   }
   if (event.keyCode == 81) {
     keyboard.Q = true;
-  }
-  if (event.keyCode == 83) {
-    keyboard.S = true;
-  }
-  if (event.keyCode == 87) {
-    keyboard.W = true;
   }
 });
 
@@ -62,24 +51,13 @@ window.addEventListener('keyup', (event) => {
   if (event.keyCode == 40) {
     keyboard.DOWN = false;
   }
-  if (event.keyCode == 65) {
-    keyboard.A = false;
-  }
-  if (event.keyCode == 68) {
-    keyboard.D = false;
-  }
   if (event.keyCode == 69) {
     keyboard.E = false;
   }
   if (event.keyCode == 81) {
     keyboard.Q = false;
   }
-  if (event.keyCode == 83) {
-    keyboard.S = false;
-  }
-  if (event.keyCode == 87) {
-    keyboard.W = false;
-  }
+
   world.character.currentImage = 0;
   world.character.attack = 0;
 });

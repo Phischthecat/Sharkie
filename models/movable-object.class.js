@@ -5,9 +5,21 @@ class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   isKilled = false;
+  speedY = 0;
+  acceleration = 0.05;
+  attack = 0;
+
+  offset_agressive = {};
 
   constructor() {
     super();
+  }
+
+  applyUplift() {
+    setInterval(() => {
+      this.y -= this.speedY;
+      this.speedY += this.acceleration;
+    }, 1000 / 60);
   }
 
   isColliding(mo) {
@@ -16,6 +28,17 @@ class MovableObject extends DrawableObject {
       this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
       this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
       this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+    );
+  }
+
+  isInFrontOf(mo) {
+    return (
+      this.x + this.width - this.offset.right >
+        mo.x - mo.offset_agressive.left &&
+      this.y + this.height - this.offset.bottom >
+        mo.y - mo.offset_agressive.top &&
+      this.x + this.offset.left < mo.x + mo.width + mo.offset_agressive.right &&
+      this.y + this.offset.top < mo.y + mo.height + mo.offset_agressive.bottom
     );
   }
 

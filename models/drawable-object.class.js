@@ -6,9 +6,6 @@ class DrawableObject {
   img;
   imageCache = {};
   currentImage = 0;
-  speedY = 0;
-  acceleration = 0.05;
-  attack = 0;
 
   offset = {
     top: 0,
@@ -44,13 +41,6 @@ class DrawableObject {
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
-  }
-
-  applyUplift() {
-    setInterval(() => {
-      this.y -= this.speedY;
-      this.speedY += this.acceleration;
-    }, 1000 / 60);
   }
 
   draw(ctx) {
