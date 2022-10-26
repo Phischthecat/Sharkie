@@ -1,11 +1,23 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let sounds = {
+  swimming_sound: new Audio('audio/swim.mp3'),
+  collectCoin_sound: new Audio('audio/coin.mp3'),
+  bubble_sound: new Audio('audio/bubble.mp3'),
+  collectPoisonBottle_sound: new Audio('audio/poison-bubble.mp3'),
+  slap_sound: new Audio('audio/slap.mp3'),
+  ambience_sound: new Audio('audio/underwater-ambience.mp3'),
+  bubble_pop_sound: new Audio('audio/bubble-pop.mp3'),
+  hurt_sound: new Audio('audio/hurt.mp3'),
+  deadJelly_sound: new Audio('audio/deadJelly.mp3'),
+};
 
 function init() {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard); //neue Welt mit der Variable canvas (das HTML Element), damit wir in der Welt das canvas zu greifen können
 
+  soundSetting();
   console.log('My Character is ', world.character);
   console.log('enemies are ', world.level.enemies);
 }
@@ -61,3 +73,15 @@ window.addEventListener('keyup', (event) => {
   world.character.currentImage = 0;
   world.character.attack = 0;
 });
+
+function soundSetting() {
+  sounds.swimming_sound.volume = 0.2;
+  sounds.collectCoin_sound.volume = 0.7;
+  sounds.bubble_sound.volume = 0.3;
+  sounds.collectPoisonBottle_sound.volume = 0.7;
+  sounds.slap_sound.volume = 0.3;
+  sounds.ambience_sound.volume = 0.3;
+  sounds.bubble_pop_sound.volume = 0.3;
+  sounds.hurt_sound.volume = 0.1;
+  sounds.deadJelly_sound.volume = 1;
+}

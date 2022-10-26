@@ -29,8 +29,6 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.isPufferfishAgressive();
-    }, 125);
-    setInterval(() => {
       this.createShootObjects();
     }, 200);
   }
@@ -47,7 +45,8 @@ class World {
 
   checkCollisions() {
     this.isCollidingWithEnemies();
-    this.isCollidingWithCollectables();
+    this.collisionWithCoins();
+    this.collisionWithPoison();
     this.isBubbleCollidingWithEnemies();
     this.isSlapCollidingWithEnemies();
   }
@@ -56,10 +55,10 @@ class World {
     this.shootableObjects.forEach((bubble, indexB) => {
       this.level.enemies.forEach((enemy, indexE) => {
         if (bubble.isColliding(enemy) && enemy.species.includes('Jellyfish')) {
-          this.shootableObjects.splice(indexB, 1);
+          bubbleBursts(indexB);
           this.killJellyfish(indexE);
         } else if (bubble.isColliding(enemy)) {
-          this.shootableObjects.splice(indexB, 1);
+          bubbleBursts(indexB);
         }
       });
     });
@@ -68,28 +67,14 @@ class World {
   isSlapCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
       if (
-        this.character.isInFrontOf(enemy, index) &&
+        !this.character.isColliding(enemy) &&
+        this.character.isInFrontOf(enemy, 0, 0, 0, 50) &&
         this.level.enemies[index].species.includes('Pufferfish') &&
         this.keyboard.Q
       ) {
         this.killPufferfish(index);
       }
     });
-  }
-
-  killJellyfish(index) {
-    this.level.enemies[index].isKilled = true;
-    this.level.enemies[index].applyUplift();
-    setTimeout(() => {
-      this.level.enemies.splice(index, 1);
-    }, 2500);
-  }
-
-  killPufferfish(index) {
-    this.level.enemies[index].isKilled = true;
-    setTimeout(() => {
-      this.level.enemies.splice(index, 1);
-    }, 2500);
   }
 
   isCollidingWithEnemies() {
@@ -102,9 +87,9 @@ class World {
         } else if (enemy.species.includes('Pufferfish')) {
           this.character.hit(0.5);
         }
-      } else {
-        this.statusBar[0].setPercentage(this.character.energy);
+        sounds.hurt_sound.play();
       }
+      this.statusBar[0].setPercentage(this.character.energy);
     });
   }
 
@@ -112,7 +97,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (
         enemy.species.includes('Pufferfish') &&
-        this.character.isInFrontOf(enemy)
+        this.character.isInFrontOf(enemy, 50, 50, 50, 50)
       ) {
         enemy.isAgressive = true;
       } else {
@@ -121,17 +106,12 @@ class World {
     });
   }
 
-  isCollidingWithCollectables() {
-    this.collisionWithCoins();
-    this.collisionWithPoison();
-  }
-
   collisionWithCoins() {
     this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin, index)) {
         this.character.collectCoin();
         this.level.coins[index].collected = true;
-        // this.character.collectCoin_sound.play();
+        sounds.collectCoin_sound.play();
         setTimeout(() => {
           this.level.coins.splice(index, 1);
         }, 150);
@@ -145,7 +125,7 @@ class World {
       if (this.character.isColliding(poison, index)) {
         this.character.collectPoison();
         this.level.poisons[index].collected = true;
-        // this.character.collectPoisonBottle_sound.play();
+        sounds.collectPoisonBottle_sound.play();
         setTimeout(() => {
           this.level.poisons.splice(index, 1);
         }, 70);
@@ -205,5 +185,26 @@ class World {
       mo.x = mo.x * -1;
       this.ctx.restore();
     }
+  }
+
+  bubbleBursts(index) {
+    this.shootableObjects.splice(index, 1);
+    sounds.bubble_pop_sound.play();
+  }
+
+  killJellyfish(index) {
+    this.level.enemies[index].isKilled = true;
+    this.level.enemies[index].applyUplift();
+    sounds.deadJelly_sound.play();
+    setTimeout(() => {
+      this.level.enemies.splice(index, 1);
+    }, 2500);
+  }
+
+  killPufferfish(index) {
+    this.level.enemies[index].isKilled = true;
+    setTimeout(() => {
+      this.level.enemies.splice(index, 1);
+    }, 2500);
   }
 }

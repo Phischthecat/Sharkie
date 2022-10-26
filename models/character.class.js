@@ -1,9 +1,5 @@
 class Character extends MovableObject {
   speed = 5;
-  swiming_sound = new Audio('audio/swim.mp3');
-  bubble_sound = new Audio('audio/bubble.mp3');
-  collectCoin_sound = new Audio('audio/coin.mp3');
-  collectPoisonBottle_sound = new Audio('audio/poison-bubble.mp3');
   world;
   isPaused = false;
   dead = 0;
@@ -36,7 +32,7 @@ class Character extends MovableObject {
       ) {
         this.moveRight();
         this.otherDirection = false;
-        this.swiming_sound.play();
+        sounds.swimming_sound.play();
       }
       if (
         (this.world.keyboard.LEFT && this.x > 0) ||
@@ -44,21 +40,21 @@ class Character extends MovableObject {
       ) {
         this.moveLeft();
         this.otherDirection = true;
-        this.swiming_sound.play();
+        sounds.swimming_sound.play();
       }
       if (
         (this.world.keyboard.UP && this.y > -100) ||
         (this.world.keyboard.W && this.y > -100)
       ) {
         this.moveUp();
-        this.swiming_sound.play();
+        sounds.swimming_sound.play();
       }
       if (
         (this.world.keyboard.DOWN && this.y < 250) ||
         (this.world.keyboard.S && this.y < 250)
       ) {
         this.moveDown();
-        this.swiming_sound.play();
+        sounds.swimming_sound.play();
       }
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
@@ -88,7 +84,7 @@ class Character extends MovableObject {
           this.playAnimation(this.IMAGES_BUBBLETRAP);
           this.attack++;
         } else {
-          this.bubble_sound.play();
+          sounds.bubble_sound.play();
           this.attack = 0;
         }
       } else if (this.world.keyboard.Q) {
@@ -96,7 +92,7 @@ class Character extends MovableObject {
           this.playAnimation(this.IMAGES_SLAP);
           this.attack++;
         } else {
-          this.bubble_sound.play();
+          sounds.slap_sound.play();
           this.attack = 0;
         }
       } else {

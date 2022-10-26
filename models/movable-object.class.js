@@ -31,14 +31,12 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  isInFrontOf(mo) {
+  isInFrontOf(mo, offset_top, offset_right, offset_bottom, offset_left) {
     return (
-      this.x + this.width - this.offset.right >
-        mo.x - mo.offset_agressive.left &&
-      this.y + this.height - this.offset.bottom >
-        mo.y - mo.offset_agressive.top &&
-      this.x + this.offset.left < mo.x + mo.width + mo.offset_agressive.right &&
-      this.y + this.offset.top < mo.y + mo.height + mo.offset_agressive.bottom
+      this.x + this.width - this.offset.right > mo.x - offset_left &&
+      this.y + this.height - this.offset.bottom > mo.y - offset_top &&
+      this.x + this.offset.left < mo.x + mo.width + offset_right &&
+      this.y + this.offset.top < mo.y + mo.height + offset_bottom
     );
   }
 

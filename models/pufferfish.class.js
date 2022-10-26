@@ -11,13 +11,6 @@ class Pufferfish extends MovableObject {
     left: 0,
   };
 
-  offset_agressive = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50,
-  };
-
   constructor(type) {
     super().loadImage(this.changeImagesByType(type)[0]);
     this.loadImages(this.changeImagesByType(type));
