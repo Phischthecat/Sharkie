@@ -11,6 +11,7 @@ let sounds = {
   bubble_pop_sound: new Audio('audio/bubble-pop.mp3'),
   hurt_sound: new Audio('audio/hurt.mp3'),
   deadJelly_sound: new Audio('audio/deadJelly.mp3'),
+  endbossHurt_sound: new Audio('audio/hurtEndboss.mp3'),
 };
 
 function init() {
@@ -83,5 +84,6 @@ function soundSetting() {
   sounds.ambience_sound.volume = 0.3;
   sounds.bubble_pop_sound.volume = 0.3;
   sounds.hurt_sound.volume = 0.1;
+  sounds.endbossHurt_sound.volume = 0.05;
   sounds.deadJelly_sound.volume = 1;
 }

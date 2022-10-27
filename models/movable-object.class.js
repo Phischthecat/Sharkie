@@ -1,5 +1,6 @@
 class MovableObject extends DrawableObject {
   //super klasse für alle beweglichen objekte
+  world;
   speed = 0.15;
   otherDirection = false;
   energy = 100;
@@ -8,8 +9,7 @@ class MovableObject extends DrawableObject {
   speedY = 0;
   acceleration = 0.05;
   attack = 0;
-
-  offset_agressive = {};
+  dead = 0;
 
   constructor() {
     super();
@@ -24,11 +24,26 @@ class MovableObject extends DrawableObject {
 
   isColliding(mo) {
     return (
-      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-      this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+      this.x + this.width - this.offset.right > mo.x + mo.offset.left && // => right > left
+      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && // => top > bottom
+      this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // => left < right
+      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom // => top < bottom
     );
+  }
+
+  isCollidingBottom(mo) {
+    return this.y + this.height - this.offset.bottom > mo.y + mo.offset.top;
+  }
+  isCollidingTop(mo) {
+    return this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+  }
+
+  isCollidingLeft(mo) {
+    return this.x + this.width - this.offset.right > mo.x + mo.offset.left;
+  }
+
+  isCollidingRight(mo) {
+    return this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
   }
 
   isInFrontOf(mo, offset_top, offset_right, offset_bottom, offset_left) {

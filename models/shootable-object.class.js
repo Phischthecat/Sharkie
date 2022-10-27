@@ -11,10 +11,17 @@ class ShootableObject extends MovableObject {
 
   shoot() {
     this.speedY = 1;
-    setInterval(() => {
-      this.x += 5;
-      this.y += 0.05;
-    }, 25);
+    if (!world.character.otherDirection) {
+      setInterval(() => {
+        this.x += 5;
+        this.y += 0.05;
+      }, 25);
+    } else {
+      setInterval(() => {
+        this.x -= 5;
+        this.y -= 0.05;
+      }, 25);
+    }
     setTimeout(() => {
       this.applyUplift();
     }, 2000);

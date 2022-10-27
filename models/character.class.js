@@ -1,10 +1,9 @@
 class Character extends MovableObject {
-  speed = 5;
+  speed = 15;
   world;
   isPaused = false;
-  dead = 0;
   collectedCoins = 0;
-  collectedPoison = 0;
+  collectedPoison = 100;
 
   offset = {
     top: 120,
@@ -59,14 +58,13 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    let animation = setInterval(() => {
-      if (this.isPaused) {
-        clearInterval(animation);
-      } else if (this.isDead()) {
+    let character_animation = setInterval(() => {
+      if (this.isDead()) {
         if (this.dead < this.IMAGES_DEAD.length - 1) {
           this.playAnimation(this.IMAGES_DEAD);
         } else {
-          this.isPaused = true;
+          this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+          clearInterval(character_animation);
         }
         this.dead++;
       } else if (this.isHurt()) {
@@ -78,23 +76,10 @@ class Character extends MovableObject {
         this.world.keyboard.DOWN
       ) {
         this.playAnimation(this.IMAGES_SWIM);
-        this.isPaused = false;
       } else if (this.world.keyboard.SPACE || this.world.keyboard.E) {
-        if (this.attack < 8) {
-          this.playAnimation(this.IMAGES_BUBBLETRAP);
-          this.attack++;
-        } else {
-          sounds.bubble_sound.play();
-          this.attack = 0;
-        }
+        this.shootBubbles();
       } else if (this.world.keyboard.Q) {
-        if (this.attack < this.IMAGES_SLAP.length) {
-          this.playAnimation(this.IMAGES_SLAP);
-          this.attack++;
-        } else {
-          sounds.slap_sound.play();
-          this.attack = 0;
-        }
+        this.slapEnemy();
       } else {
         this.playAnimation(this.IMAGES_IDLE);
         this.isPaused = false;
@@ -103,18 +88,34 @@ class Character extends MovableObject {
     }, 150);
   }
 
+  shootBubbles() {
+    if (this.attack < 8) {
+      this.playAnimation(this.IMAGES_BUBBLETRAP);
+      this.attack++;
+    } else {
+      this.attack = 0;
+    }
+  }
+
+  slapEnemy() {
+    if (this.attack < this.IMAGES_SLAP.length) {
+      this.playAnimation(this.IMAGES_SLAP);
+      this.attack++;
+    } else {
+      this.attack = 0;
+    }
+  }
+
   collectCoin() {
     this.collectedCoins += 20;
     if (this.collectedCoins > 100) {
       this.collectedCoins = 100;
-    } else {
     }
   }
   collectPoison() {
     this.collectedPoison += 20;
     if (this.collectedPoison > 100) {
       this.collectedPoison = 100;
-    } else {
     }
   }
 

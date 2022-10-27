@@ -6,9 +6,9 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = [
-    new Statusbar(-10, 'life', 100),
-    new Statusbar(40, 'coins', 0),
-    new Statusbar(90, 'poison', 0),
+    new Statusbar(20, -10, 'life', 100),
+    new Statusbar(20, 40, 'coins', 0),
+    new Statusbar(20, 90, 'poison', 0),
   ];
   shootableObjects = [];
 
@@ -22,6 +22,7 @@ class World {
   }
 
   setWorld() {
+    this.level.world = this;
     this.character.world = this; //übergibt die aktuelle instanz von world an alle movableObjects (aktuell nur character)
   }
 
@@ -30,16 +31,26 @@ class World {
       this.checkCollisions();
       this.isPufferfishAgressive();
       this.createShootObjects();
+      this.showLifeStatusbarForEndboss();
     }, 200);
   }
 
   createShootObjects() {
     if (this.keyboard.SPACE && this.character.attack > 7) {
-      let bubble = new ShootableObject(
-        this.character.x + 155,
-        this.character.y + 135
-      );
+      let bubble;
+      if (!this.character.otherDirection) {
+        bubble = new ShootableObject(
+          this.character.x + 155,
+          this.character.y + 135
+        );
+      } else {
+        bubble = new ShootableObject(
+          this.character.x + 25,
+          this.character.y + 125
+        );
+      }
       this.shootableObjects.push(bubble);
+      sounds.bubble_sound.play();
     }
   }
 
@@ -49,19 +60,39 @@ class World {
     this.collisionWithPoison();
     this.isBubbleCollidingWithEnemies();
     this.isSlapCollidingWithEnemies();
+    this.isCollidingWithBarriers();
   }
 
   isBubbleCollidingWithEnemies() {
     this.shootableObjects.forEach((bubble, indexB) => {
       this.level.enemies.forEach((enemy, indexE) => {
         if (bubble.isColliding(enemy) && enemy.species.includes('Jellyfish')) {
-          bubbleBursts(indexB);
+          this.bubbleBursts(indexB);
           this.killJellyfish(indexE);
+        } else if (
+          this.character.collectedPoison == 100 &&
+          bubble.isColliding(enemy) &&
+          enemy.species == 'endboss'
+        ) {
+          this.bubbleBursts(indexB);
+          enemy.hit(10);
+          sounds.endbossHurt_sound.play();
+          this.statusBar[3].setPercentage(enemy.energy);
         } else if (bubble.isColliding(enemy)) {
-          bubbleBursts(indexB);
+          this.bubbleBursts(indexB);
         }
       });
     });
+  }
+
+  showLifeStatusbarForEndboss() {
+    if (this.character.x > 1600) {
+      this.statusBar.push(
+        new Statusbar(600, -10, 'life', this.level.enemies[0].energy)
+      );
+    } else if (this.statusBar.length > 3 && this.character.x < 1600) {
+      this.statusBar.pop();
+    }
   }
 
   isSlapCollidingWithEnemies() {
@@ -73,13 +104,14 @@ class World {
         this.keyboard.Q
       ) {
         this.killPufferfish(index);
+        sounds.slap_sound.play();
       }
     });
   }
 
   isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
-      if (this.character.isColliding(enemy, index) && !this.isKilled) {
+      if (this.character.isColliding(enemy, index) && !enemy.isKilled) {
         if (enemy.species == 'endboss') {
           this.character.hit(5);
         } else if (enemy.species.includes('Jellyfish')) {
@@ -90,6 +122,38 @@ class World {
         sounds.hurt_sound.play();
       }
       this.statusBar[0].setPercentage(this.character.energy);
+    });
+  }
+
+  isCollidingWithBarriers() {
+    this.level.barriers.forEach((barrier, index) => {
+      if (this.character.isColliding(barrier, index)) {
+        if (
+          this.keyboard.DOWN &&
+          this.character.isCollidingTop(barrier, index)
+        ) {
+          this.moveUp();
+          console.log('Top');
+        } else if (
+          this.keyboard.UP &&
+          this.character.isCollidingBottom(barrier, index)
+        ) {
+          this.moveDown();
+          console.log('Bottom');
+        } else if (
+          this.keyboard.LEFT &&
+          this.character.isCollidingLeft(barrier, index)
+        ) {
+          this.keyboard.LEFT = false;
+          console.log('Left');
+        } else if (
+          this.keyboard.RIGHT &&
+          this.character.isCollidingRight(barrier, index)
+        ) {
+          this.keyboard.RIGHT = false;
+          console.log('Right');
+        }
+      }
     });
   }
 
@@ -140,13 +204,14 @@ class World {
     this.ctx.translate(this.camera_x, 0); //verschiebt den ctx (context) um camera_x nach links
 
     this.addObjectstoMap(this.level.backgroundObjects);
+    this.addObjectstoMap(this.level.barriers);
     this.addToMap(this.character); //fügt den character hinzu
     this.addObjectstoMap(this.level.enemies); //fügt die enemies hinzu
     this.addObjectstoMap(this.shootableObjects); //fügt die bubbles hinzu
     this.addObjectstoMap(this.level.coins); //fügt die collectables hinzu
     this.addObjectstoMap(this.level.poisons); //fügt die collectables hinzu
-    this.ctx.translate(-this.camera_x, 0); //fügt die backgroundObjects hinzu
     // Space for fixed objects
+    this.ctx.translate(-this.camera_x, 0);
     this.addObjectstoMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0); //fügt den character hinzu
 
