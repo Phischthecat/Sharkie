@@ -97,7 +97,10 @@ class Character extends MovableObject {
   }
 
   isCollidingCharacterWithBarrier(side) {
-    if (this.isCollidingWithBarrier(this.world.level.barriers[0]) != side) {
+    if (
+      this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[1]) != side
+    ) {
       return true;
     }
   }

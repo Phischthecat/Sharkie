@@ -52,5 +52,5 @@ const level1 = new Level(
     new CollectableObject(300, 60, 50, 'poisonBottle'),
     new CollectableObject(1500, 60, 50, 'poisonBottle'),
   ],
-  [new Barrier(450, 0, 'top')]
+  [new Barrier(450, 0, 'top'), new Barrier(450, 310, 'bottom')]
 );

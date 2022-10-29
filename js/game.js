@@ -21,6 +21,7 @@ function init() {
   soundSetting();
   console.log('My Character is ', world.character);
   console.log('enemies are ', world.level.enemies);
+  console.log('barriers are ', world.level.barriers);
 }
 
 window.addEventListener('keydown', (event) => {
