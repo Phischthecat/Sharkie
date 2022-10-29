@@ -4,7 +4,6 @@ class Character extends MovableObject {
   isPaused = false;
   collectedCoins = 0;
   collectedPoison = 100;
-
   offset = {
     top: 120,
     right: 40,
@@ -25,36 +24,10 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (
-        (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) ||
-        (this.world.keyboard.D && this.x < this.world.level.level_end_x)
-      ) {
-        this.moveRight();
-        this.otherDirection = false;
-        sounds.swimming_sound.play();
-      }
-      if (
-        (this.world.keyboard.LEFT && this.x > 0) ||
-        (this.world.keyboard.A && this.x > 0)
-      ) {
-        this.moveLeft();
-        this.otherDirection = true;
-        sounds.swimming_sound.play();
-      }
-      if (
-        (this.world.keyboard.UP && this.y > -100) ||
-        (this.world.keyboard.W && this.y > -100)
-      ) {
-        this.moveUp();
-        sounds.swimming_sound.play();
-      }
-      if (
-        (this.world.keyboard.DOWN && this.y < 250) ||
-        (this.world.keyboard.S && this.y < 250)
-      ) {
-        this.moveDown();
-        sounds.swimming_sound.play();
-      }
+      this.movingRight();
+      this.movingLeft();
+      this.movingTop();
+      this.movingDown();
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
@@ -76,6 +49,7 @@ class Character extends MovableObject {
         this.world.keyboard.DOWN
       ) {
         this.playAnimation(this.IMAGES_SWIM);
+        sounds.swimming_sound.play();
       } else if (this.world.keyboard.SPACE || this.world.keyboard.E) {
         this.shootBubbles();
       } else if (this.world.keyboard.Q) {
@@ -86,6 +60,46 @@ class Character extends MovableObject {
         this.attack = 0;
       }
     }, 150);
+  }
+
+  movingLeft() {
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      if (this.isCollidingCharacterWithBarrier('left')) {
+        this.moveLeft();
+        this.otherDirection = true;
+      }
+    }
+  }
+
+  movingRight() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      if (this.isCollidingCharacterWithBarrier('right')) {
+        this.moveRight();
+        this.otherDirection = false;
+      }
+    }
+  }
+
+  movingTop() {
+    if (this.world.keyboard.UP && this.y > -100) {
+      if (this.isCollidingCharacterWithBarrier('top')) {
+        this.moveUp();
+      }
+    }
+  }
+
+  movingDown() {
+    if (this.world.keyboard.DOWN && this.y < 250) {
+      if (this.isCollidingCharacterWithBarrier('bottom')) {
+        this.moveDown();
+      }
+    }
+  }
+
+  isCollidingCharacterWithBarrier(side) {
+    if (this.isCollidingWithBarrier(this.world.level.barriers[0]) != side) {
+      return true;
+    }
   }
 
   shootBubbles() {

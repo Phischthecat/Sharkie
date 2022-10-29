@@ -31,21 +31,6 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  isCollidingBottom(mo) {
-    return this.y + this.height - this.offset.bottom > mo.y + mo.offset.top;
-  }
-  isCollidingTop(mo) {
-    return this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
-  }
-
-  isCollidingLeft(mo) {
-    return this.x + this.width - this.offset.right > mo.x + mo.offset.left;
-  }
-
-  isCollidingRight(mo) {
-    return this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
-  }
-
   isInFrontOf(mo, offset_top, offset_right, offset_bottom, offset_left) {
     return (
       this.x + this.width - this.offset.right > mo.x - offset_left &&
@@ -53,6 +38,24 @@ class MovableObject extends DrawableObject {
       this.x + this.offset.left < mo.x + mo.width + offset_right &&
       this.y + this.offset.top < mo.y + mo.height + offset_bottom
     );
+  }
+
+  isCollidingWithBarrier(barrier) {
+    if (this.isColliding(barrier)) {
+      if (this.depthX(barrier) != 0 && this.depthY(barrier) != 0) {
+        // having the depth, pick the smaller depth and move along that axis
+        if (Math.abs(this.depthX(barrier)) < Math.abs(this.depthY(barrier))) {
+          if (this.depthX(barrier) > 0) return 'left'; // Collision along the X-axis...
+          return 'right';
+        } else {
+          // Collision along the Y-axis...
+          if (this.depthY(barrier) > 0) return 'top';
+          return 'bottom';
+        }
+      }
+    } else {
+      return null;
+    }
   }
 
   hit(hitPoints) {
@@ -94,5 +97,46 @@ class MovableObject extends DrawableObject {
 
   moveDown() {
     this.y += this.speed;
+  }
+
+  diffX(barrier) {
+    return this.centerX() - barrier.centerX();
+  }
+
+  centerX() {
+    // Calculate the distance between centers
+    return this.x + this.width / 2;
+  }
+
+  diffY(barrier) {
+    return this.centerY() - barrier.centerY();
+  }
+
+  centerY() {
+    // Calculate the distance between centers
+    return this.y + this.height / 2;
+  }
+
+  minDistX(barrier) {
+    // Calculate the minimum distance to X
+    return this.width / 2 + barrier.width / 2;
+  }
+  minDistY(barrier) {
+    // Calculate the minimum distance to Y
+    return this.height / 2 + barrier.height / 2;
+  }
+
+  depthX(barrier) {
+    // Calculate the depth of collision for the X axis
+    return this.diffX(barrier) > 0
+      ? this.minDistX(barrier) - this.diffX(barrier)
+      : -this.minDistX(barrier) - this.diffX(barrier);
+  }
+
+  depthY(barrier) {
+    // Calculate the depth of collision for the Y axis
+    return this.diffY(barrier) > 0
+      ? this.minDistY(barrier) - this.diffY(barrier)
+      : -this.minDistY(barrier) - this.diffY(barrier);
   }
 }

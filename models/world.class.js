@@ -60,7 +60,6 @@ class World {
     this.collisionWithPoison();
     this.isBubbleCollidingWithEnemies();
     this.isSlapCollidingWithEnemies();
-    this.isCollidingWithBarriers();
   }
 
   isBubbleCollidingWithEnemies() {
@@ -122,38 +121,6 @@ class World {
         sounds.hurt_sound.play();
       }
       this.statusBar[0].setPercentage(this.character.energy);
-    });
-  }
-
-  isCollidingWithBarriers() {
-    this.level.barriers.forEach((barrier, index) => {
-      if (this.character.isColliding(barrier, index)) {
-        if (
-          this.keyboard.DOWN &&
-          this.character.isCollidingTop(barrier, index)
-        ) {
-          this.moveUp();
-          console.log('Top');
-        } else if (
-          this.keyboard.UP &&
-          this.character.isCollidingBottom(barrier, index)
-        ) {
-          this.moveDown();
-          console.log('Bottom');
-        } else if (
-          this.keyboard.LEFT &&
-          this.character.isCollidingLeft(barrier, index)
-        ) {
-          this.keyboard.LEFT = false;
-          console.log('Left');
-        } else if (
-          this.keyboard.RIGHT &&
-          this.character.isCollidingRight(barrier, index)
-        ) {
-          this.keyboard.RIGHT = false;
-          console.log('Right');
-        }
-      }
     });
   }
 
