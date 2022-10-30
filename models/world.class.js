@@ -50,7 +50,7 @@ class World {
         );
       }
       this.shootableObjects.push(bubble);
-      sounds.bubble_sound.play();
+      sounds.bubble.play();
     }
   }
 
@@ -74,9 +74,7 @@ class World {
           enemy.species == 'endboss'
         ) {
           this.bubbleBursts(indexB);
-          enemy.hit(10);
-          sounds.endbossHurt_sound.play();
-          this.statusBar[3].setPercentage(enemy.energy);
+          this.hitEndboss(enemy);
         } else if (bubble.isColliding(enemy)) {
           this.bubbleBursts(indexB);
         }
@@ -84,13 +82,17 @@ class World {
     });
   }
 
+  hitEndboss(enemy) {
+    enemy.hit(10);
+    sounds.endbossHurt.play();
+    this.statusBar[3].setPercentage(enemy.energy);
+  }
+
   showLifeStatusbarForEndboss() {
-    if (this.character.x > 1600) {
+    if (this.character.x > 4000) {
       this.statusBar.push(
         new Statusbar(600, -10, 'life', this.level.enemies[0].energy)
       );
-    } else if (this.statusBar.length > 3 && this.character.x < 1600) {
-      this.statusBar.pop();
     }
   }
 
@@ -103,7 +105,7 @@ class World {
         this.keyboard.Q
       ) {
         this.killPufferfish(index);
-        sounds.slap_sound.play();
+        sounds.slap.play();
       }
     });
   }
@@ -118,7 +120,7 @@ class World {
         } else if (enemy.species.includes('Pufferfish')) {
           this.character.hit(0.5);
         }
-        sounds.hurt_sound.play();
+        sounds.hurt.play();
       }
       this.statusBar[0].setPercentage(this.character.energy);
     });
@@ -142,7 +144,7 @@ class World {
       if (this.character.isColliding(coin, index)) {
         this.character.collectCoin();
         this.level.coins[index].collected = true;
-        sounds.collectCoin_sound.play();
+        sounds.collectCoin.play();
         setTimeout(() => {
           this.level.coins.splice(index, 1);
         }, 150);
@@ -156,7 +158,7 @@ class World {
       if (this.character.isColliding(poison, index)) {
         this.character.collectPoison();
         this.level.poisons[index].collected = true;
-        sounds.collectPoisonBottle_sound.play();
+        sounds.collectPoisonBottle.play();
         setTimeout(() => {
           this.level.poisons.splice(index, 1);
         }, 70);
@@ -221,13 +223,13 @@ class World {
 
   bubbleBursts(index) {
     this.shootableObjects.splice(index, 1);
-    sounds.bubble_pop_sound.play();
+    sounds.bubble_pop.play();
   }
 
   killJellyfish(index) {
     this.level.enemies[index].isKilled = true;
     this.level.enemies[index].applyUplift();
-    sounds.deadJelly_sound.play();
+    sounds.deadJelly.play();
     setTimeout(() => {
       this.level.enemies.splice(index, 1);
     }, 2500);

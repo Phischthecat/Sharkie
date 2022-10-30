@@ -1,6 +1,6 @@
 class Barrier extends MovableObject {
   height = 170;
-  width = 1000;
+  width = 500;
 
   offset = {
     top: 30,
@@ -9,10 +9,12 @@ class Barrier extends MovableObject {
     left: 20,
   };
 
-  constructor(x, y, type) {
+  constructor(x, y, width, height, type) {
     super().loadImage(this.IMAGES_BARRIER[this.changeImageByType(type)]);
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
   }
 
   changeImageByType(type) {

@@ -3,12 +3,12 @@ class Jellyfish extends MovableObject {
   width = 75;
   species;
 
-  constructor(type) {
+  constructor(x, type) {
     super().loadImage(this.changeImagesByType(type)[0]);
     this.loadImages(this.changeImagesByType(type));
     this.loadImages(this.changeImagesByTypeDEAD(type));
-    this.x = 200 + Math.random() * 500; // erzeugt Zahl zwischen 200 bis 700
-    this.y = 150 - this.height / 2; // Zahl zwischen 50 bis 350
+    this.x = x;
+    this.y = 150 - this.height / 2;
     this.speed = 0.35;
     this.species = 'Jellyfish ' + type;
     this.changeDirection(12000);

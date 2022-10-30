@@ -48,8 +48,7 @@ class MovableObject extends DrawableObject {
           if (this.depthX(barrier) > 0) return 'left'; // Collision along the X-axis...
           return 'right';
         } else {
-          // Collision along the Y-axis...
-          if (this.depthY(barrier) > 0) return 'top';
+          if (this.depthY(barrier) > 0) return 'top'; // Collision along the Y-axis...
           return 'bottom';
         }
       }

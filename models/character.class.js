@@ -4,6 +4,7 @@ class Character extends MovableObject {
   isPaused = false;
   collectedCoins = 0;
   collectedPoison = 100;
+  electroHit = false;
   offset = {
     top: 120,
     right: 40,
@@ -18,6 +19,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_BUBBLETRAP);
     this.loadImages(this.IMAGES_SLAP);
     this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_DEAD_ELECTRO);
     this.loadImages(this.IMAGES_HURT_POISON);
     this.animate();
   }
@@ -33,12 +35,7 @@ class Character extends MovableObject {
 
     let character_animation = setInterval(() => {
       if (this.isDead()) {
-        if (this.dead < this.IMAGES_DEAD.length - 1) {
-          this.playAnimation(this.IMAGES_DEAD);
-        } else {
-          this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-          clearInterval(character_animation);
-        }
+        this.isDying(character_animation);
         this.dead++;
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT_POISON);
@@ -49,7 +46,7 @@ class Character extends MovableObject {
         this.world.keyboard.DOWN
       ) {
         this.playAnimation(this.IMAGES_SWIM);
-        sounds.swimming_sound.play();
+        sounds.swimming.play();
       } else if (this.world.keyboard.SPACE || this.world.keyboard.E) {
         this.shootBubbles();
       } else if (this.world.keyboard.Q) {
@@ -62,8 +59,25 @@ class Character extends MovableObject {
     }, 150);
   }
 
+  isDying(character_animation) {
+    if (this.dead < this.IMAGES_DEAD.length - 1) {
+      if (this.electroHit) {
+        this.playAnimation(this.IMAGES_DEAD_ELECTRO);
+      } else {
+        this.playAnimation(this.IMAGES_DEAD);
+      }
+    } else {
+      if (this.electroHit) {
+        this.loadImage(this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD.length - 1]);
+      } else {
+        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+      }
+      clearInterval(character_animation);
+    }
+  }
+
   movingLeft() {
-    if (this.world.keyboard.LEFT && this.x > 0) {
+    if (this.world.keyboard.LEFT && this.x > this.world.level.level_start_x) {
       if (this.isCollidingCharacterWithBarrier('left')) {
         this.moveLeft();
         this.otherDirection = true;
@@ -215,6 +229,19 @@ class Character extends MovableObject {
     'img/1.Sharkie/6.dead/1.Poisoned/10.png',
     'img/1.Sharkie/6.dead/1.Poisoned/11.png',
     'img/1.Sharkie/6.dead/1.Poisoned/12.png',
+  ];
+
+  IMAGES_DEAD_ELECTRO = [
+    'img/1.Sharkie/6.dead/2.Electro_shock/1.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/2.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/3.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/4.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/5.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/6.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/7.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/8.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/10.png',
   ];
 
   IMAGES_HURT_POISON = [

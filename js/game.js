@@ -2,16 +2,17 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let sounds = {
-  swimming_sound: new Audio('audio/swim.mp3'),
-  collectCoin_sound: new Audio('audio/coin.mp3'),
-  bubble_sound: new Audio('audio/bubble.mp3'),
-  collectPoisonBottle_sound: new Audio('audio/poison-bubble.mp3'),
-  slap_sound: new Audio('audio/slap.mp3'),
-  ambience_sound: new Audio('audio/underwater-ambience.mp3'),
-  bubble_pop_sound: new Audio('audio/bubble-pop.mp3'),
-  hurt_sound: new Audio('audio/hurt.mp3'),
-  deadJelly_sound: new Audio('audio/deadJelly.mp3'),
-  endbossHurt_sound: new Audio('audio/hurtEndboss.mp3'),
+  swimming: new Audio('audio/swim.mp3'),
+  collectCoin: new Audio('audio/coin.mp3'),
+  bubble: new Audio('audio/bubble.mp3'),
+  collectPoisonBottle: new Audio('audio/poison-bubble.mp3'),
+  slap: new Audio('audio/slap.mp3'),
+  ambience: new Audio('audio/underwater-ambience.mp3'),
+  bubble_pop: new Audio('audio/bubble-pop.mp3'),
+  hurt: new Audio('audio/hurt.mp3'),
+  deadJelly: new Audio('audio/deadJelly.mp3'),
+  endbossHurt: new Audio('audio/endboss_hurt.mp3'),
+  endbossMusic: new Audio('audio/endboss_music.mp3'),
 };
 
 function init() {
@@ -77,14 +78,18 @@ window.addEventListener('keyup', (event) => {
 });
 
 function soundSetting() {
-  sounds.swimming_sound.volume = 0.2;
-  sounds.collectCoin_sound.volume = 0.7;
-  sounds.bubble_sound.volume = 0.3;
-  sounds.collectPoisonBottle_sound.volume = 0.7;
-  sounds.slap_sound.volume = 0.3;
-  sounds.ambience_sound.volume = 0.3;
-  sounds.bubble_pop_sound.volume = 0.3;
-  sounds.hurt_sound.volume = 0.1;
-  sounds.endbossHurt_sound.volume = 0.05;
-  sounds.deadJelly_sound.volume = 1;
+  sounds.swimming.volume = 0.2;
+  sounds.collectCoin.volume = 0.7;
+  sounds.bubble.volume = 0.3;
+  sounds.collectPoisonBottle.volume = 0.7;
+  sounds.slap.volume = 0.3;
+  sounds.ambience.volume = 0.3;
+  sounds.ambience.loop = true;
+  sounds.bubble_pop.volume = 0.3;
+  sounds.hurt.volume = 0.1;
+  sounds.endbossHurt.volume = 0.05;
+  sounds.deadJelly.volume = 1;
+  sounds.endbossHurt.volume = 0.3;
+  sounds.endbossMusic.volume = 0.3;
+  sounds.endbossMusic.loop = true;
 }

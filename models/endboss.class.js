@@ -9,39 +9,61 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_ATTACK);
     this.height = 500;
     this.width = 400;
     this.species = 'endboss';
-    this.x = 2200;
+    this.x = 4700;
     this.y = -100;
     this.animate();
+    this.firstContact();
   }
 
   animate() {
     let endboss_animation = setInterval(() => {
-      if (this.i < 10) {
-        this.playAnimation(this.IMAGES_INTRO);
-      } else if (this.isDead()) {
-        this.isKilled = true;
-        if (this.dead < this.IMAGES_DEAD.length - 1) {
-          this.playAnimation(this.IMAGES_DEAD);
+      if (this.hadFirstContact) {
+        if (this.i < 10) {
+          this.playAnimation(this.IMAGES_INTRO);
+        } else if (this.isDead()) {
+          this.endbossKilled(endboss_animation);
+        } else if (this.isHurt()) {
+          this.playAnimation(this.IMAGES_HURT);
+        } else if (!this.isHurt()) {
+          this.isAttacking();
         } else {
-          this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-          clearInterval(endboss_animation);
+          this.playAnimation(this.IMAGES_FLOATING);
         }
-        this.dead++;
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else {
-        this.playAnimation(this.IMAGES_FLOATING);
       }
       this.i++;
     }, 150);
+  }
+
+  endbossKilled(endboss_animation) {
+    this.isKilled = true;
+    if (this.dead < this.IMAGES_DEAD.length - 1) {
+      this.playAnimation(this.IMAGES_DEAD);
+      this.y += 20;
+    } else {
+      this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+      clearInterval(endboss_animation);
+    }
+    this.dead++;
+  }
+
+  isAttacking() {
+    this.playAnimation(this.IMAGES_ATTACK);
+    this.x -= 1 + Math.random() * 7;
+  }
+
+  firstContact() {
     setInterval(() => {
       if (world) {
-        if (world.character.x > 1600 && !this.hadFirstContact) {
+        if (world.character.x > 4000 && !this.hadFirstContact) {
           this.i = 0;
           this.hadFirstContact = true;
+          world.level.level_start_x = 4000;
+          sounds.ambience.pause();
+          sounds.endbossMusic.play();
         }
       }
     }, 1000 / 60);
@@ -88,5 +110,14 @@ class Endboss extends MovableObject {
     'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 8.png',
     'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png',
     'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png',
+  ];
+
+  IMAGES_ATTACK = [
+    'img/2.Enemy/3 Final Enemy/Attack/1.png',
+    'img/2.Enemy/3 Final Enemy/Attack/2.png',
+    'img/2.Enemy/3 Final Enemy/Attack/3.png',
+    'img/2.Enemy/3 Final Enemy/Attack/4.png',
+    'img/2.Enemy/3 Final Enemy/Attack/5.png',
+    'img/2.Enemy/3 Final Enemy/Attack/6.png',
   ];
 }

@@ -11,14 +11,14 @@ class Pufferfish extends MovableObject {
     left: 0,
   };
 
-  constructor(type) {
+  constructor(x, y, type) {
     super().loadImage(this.changeImagesByType(type)[0]);
     this.loadImages(this.changeImagesByType(type));
     this.loadImages(this.changeImagesByTypeDEAD(type));
     this.loadImages(this.changeImagesByTypeAGRESSIVE(type));
     this.species = 'Pufferfish ' + type;
-    this.x = 200 + Math.random() * 500; // erzeugt Zahl zwischen 200 bis 700
-    this.y = 50 + Math.random() * 250; // Zahl zwischen 50 bis 350
+    this.x = x; // erzeugt Zahl zwischen 200 bis 700
+    this.y = y; // Zahl zwischen 50 bis 350
     this.speed = 0.15 + Math.random() * 0.25;
     this.changeDirection(10000);
     this.animate(type);
