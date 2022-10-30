@@ -53,6 +53,7 @@ class Endboss extends MovableObject {
   isAttacking() {
     this.playAnimation(this.IMAGES_ATTACK);
     this.x -= 1 + Math.random() * 7;
+    world.level.level_end_x = this.x;
   }
 
   firstContact() {

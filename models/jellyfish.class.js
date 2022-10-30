@@ -9,7 +9,7 @@ class Jellyfish extends MovableObject {
     this.loadImages(this.changeImagesByTypeDEAD(type));
     this.x = x;
     this.y = 150 - this.height / 2;
-    this.speed = 0.35;
+    this.speed = 0.1 + Math.random() * 0.35;
     this.species = 'Jellyfish ' + type;
     this.changeDirection(12000);
     this.animate(type);

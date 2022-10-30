@@ -28,8 +28,8 @@ class World {
 
   run() {
     setInterval(() => {
-      this.checkCollisions();
       this.isPufferfishAgressive();
+      this.checkCollisions();
       this.createShootObjects();
       this.showLifeStatusbarForEndboss();
     }, 200);
@@ -115,6 +115,10 @@ class World {
       if (this.character.isColliding(enemy, index) && !enemy.isKilled) {
         if (enemy.species == 'endboss') {
           this.character.hit(5);
+        } else if (enemy.species == 'Jellyfish pink') {
+          this.character.hit(2.5);
+          this.character.electroHit = true;
+          sounds.electroZap.play();
         } else if (enemy.species.includes('Jellyfish')) {
           this.character.hit(1.5);
         } else if (enemy.species.includes('Pufferfish')) {
@@ -133,8 +137,10 @@ class World {
         this.character.isInFrontOf(enemy, 50, 50, 50, 50)
       ) {
         enemy.isAgressive = true;
+        enemy.offset = { top: 0, right: 5, bottom: 0, left: 0 };
       } else {
         enemy.isAgressive = false;
+        enemy.offset = { top: 0, right: 5, bottom: 10, left: 0 };
       }
     });
   }

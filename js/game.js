@@ -13,6 +13,7 @@ let sounds = {
   deadJelly: new Audio('audio/deadJelly.mp3'),
   endbossHurt: new Audio('audio/endboss_hurt.mp3'),
   endbossMusic: new Audio('audio/endboss_music.mp3'),
+  electroZap: new Audio('audio/zap.mp3'),
 };
 
 function init() {
@@ -92,4 +93,5 @@ function soundSetting() {
   sounds.endbossHurt.volume = 0.3;
   sounds.endbossMusic.volume = 0.3;
   sounds.endbossMusic.loop = true;
+  sounds.electroZap.volume = 0.3;
 }

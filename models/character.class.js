@@ -21,24 +21,26 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_DEAD_ELECTRO);
     this.loadImages(this.IMAGES_HURT_POISON);
+    this.loadImages(this.IMAGES_HURT_ELECTRO);
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      this.movingRight();
-      this.movingLeft();
-      this.movingTop();
-      this.movingDown();
+      if (!this.isDead()) {
+        this.movingRight();
+        this.movingLeft();
+        this.movingTop();
+        this.movingDown();
+      }
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
     let character_animation = setInterval(() => {
       if (this.isDead()) {
         this.isDying(character_animation);
-        this.dead++;
       } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT_POISON);
+        this.isInjured();
       } else if (
         this.world.keyboard.RIGHT ||
         this.world.keyboard.LEFT ||
@@ -60,19 +62,40 @@ class Character extends MovableObject {
   }
 
   isDying(character_animation) {
-    if (this.dead < this.IMAGES_DEAD.length - 1) {
-      if (this.electroHit) {
-        this.playAnimation(this.IMAGES_DEAD_ELECTRO);
-      } else {
-        this.playAnimation(this.IMAGES_DEAD);
-      }
+    if (this.electroHit) {
+      this.getElectroSchock();
     } else {
-      if (this.electroHit) {
-        this.loadImage(this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD.length - 1]);
-      } else {
-        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-      }
-      clearInterval(character_animation);
+      this.isPoisoned();
+    }
+    clearInterval(character_animation);
+    this.dead++;
+  }
+
+  isPoisoned() {
+    if (this.dead < this.IMAGES_DEAD.length - 1) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else {
+      this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+    }
+  }
+
+  getElectroSchock() {
+    if (this.dead < this.IMAGES_DEAD_ELECTRO.length - 1) {
+      this.playAnimation(this.IMAGES_DEAD_ELECTRO);
+      this.y -= 10;
+    } else {
+      this.loadImage(
+        this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD_ELECTRO.length - 1]
+      );
+      this.y = 200;
+    }
+  }
+
+  isInjured() {
+    if (this.electroHit) {
+      this.playAnimation(this.IMAGES_HURT_ELECTRO);
+    } else {
+      this.playAnimation(this.IMAGES_HURT_POISON);
     }
   }
 
@@ -113,7 +136,8 @@ class Character extends MovableObject {
   isCollidingCharacterWithBarrier(side) {
     if (
       this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
-      this.isCollidingWithBarrier(this.world.level.barriers[1]) != side
+      this.isCollidingWithBarrier(this.world.level.barriers[1]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[2]) != side
     ) {
       return true;
     }
@@ -250,5 +274,10 @@ class Character extends MovableObject {
     'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
     'img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
     'img/1.Sharkie/5.Hurt/1.Poisoned/5.png',
+  ];
+  IMAGES_HURT_ELECTRO = [
+    'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+    'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+    'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
   ];
 }
