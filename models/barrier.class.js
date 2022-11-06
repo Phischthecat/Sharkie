@@ -1,7 +1,4 @@
 class Barrier extends MovableObject {
-  height = 170;
-  width = 500;
-
   offset = {
     top: 30,
     right: 25,

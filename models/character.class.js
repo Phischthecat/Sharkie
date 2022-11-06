@@ -63,7 +63,7 @@ class Character extends MovableObject {
 
   isDying(character_animation) {
     if (this.electroHit) {
-      this.getElectroSchock();
+      this.getElectroShock();
     } else {
       this.isPoisoned();
     }
@@ -79,7 +79,7 @@ class Character extends MovableObject {
     }
   }
 
-  getElectroSchock() {
+  getElectroShock() {
     if (this.dead < this.IMAGES_DEAD_ELECTRO.length - 1) {
       this.playAnimation(this.IMAGES_DEAD_ELECTRO);
       this.y -= 10;
@@ -118,10 +118,12 @@ class Character extends MovableObject {
   }
 
   movingTop() {
-    if (this.world.keyboard.UP && this.y > -100) {
-      if (this.isCollidingCharacterWithBarrier('top')) {
-        this.moveUp();
-      }
+    if (
+      this.world.keyboard.UP &&
+      this.y > -100 &&
+      this.isCollidingCharacterWithBarrier('top')
+    ) {
+      this.moveUp();
     }
   }
 

@@ -104,7 +104,7 @@ class MovableObject extends DrawableObject {
 
   centerX() {
     // Calculate the distance between centers
-    return this.x + this.width / 2;
+    return this.x + this.width / 2 - this.offset.right;
   }
 
   diffY(barrier) {
@@ -113,16 +113,16 @@ class MovableObject extends DrawableObject {
 
   centerY() {
     // Calculate the distance between centers
-    return this.y + this.height / 2;
+    return this.y + this.height / 2 - this.offset.bottom;
   }
 
   minDistX(barrier) {
     // Calculate the minimum distance to X
-    return this.width / 2 + barrier.width / 2;
+    return this.width / 2 - this.offset.right + barrier.width / 2;
   }
   minDistY(barrier) {
     // Calculate the minimum distance to Y
-    return this.height / 2 + barrier.height / 2;
+    return this.height / 2 - this.offset.bottom + barrier.height / 2;
   }
 
   depthX(barrier) {
