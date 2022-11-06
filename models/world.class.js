@@ -177,7 +177,7 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // löscht alle objects zu beginn
 
     this.ctx.translate(this.camera_x, 0); //verschiebt den ctx (context) um camera_x nach links
-
+    this.drawFrameForCollision(this.ctx);
     this.addObjectstoMap(this.level.backgroundObjects);
     this.addObjectstoMap(this.level.barriers);
     this.addToMap(this.character); //fügt den character hinzu
@@ -225,6 +225,11 @@ class World {
       mo.x = mo.x * -1;
       this.ctx.restore();
     }
+  }
+
+  drawFrameForCollision(ctx) {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(0, 20, 720, 20);
   }
 
   bubbleBursts(index) {

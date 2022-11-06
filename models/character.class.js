@@ -63,23 +63,23 @@ class Character extends MovableObject {
 
   isDying(character_animation) {
     if (this.electroHit) {
-      this.getElectroShock();
+      this.getElectroShock(character_animation);
     } else {
-      this.isPoisoned();
+      this.isPoisoned(character_animation);
     }
-    clearInterval(character_animation);
     this.dead++;
   }
 
-  isPoisoned() {
+  isPoisoned(animation) {
     if (this.dead < this.IMAGES_DEAD.length - 1) {
       this.playAnimation(this.IMAGES_DEAD);
     } else {
       this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+      clearInterval(animation);
     }
   }
 
-  getElectroShock() {
+  getElectroShock(animation) {
     if (this.dead < this.IMAGES_DEAD_ELECTRO.length - 1) {
       this.playAnimation(this.IMAGES_DEAD_ELECTRO);
       this.y -= 10;
@@ -88,6 +88,7 @@ class Character extends MovableObject {
         this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD_ELECTRO.length - 1]
       );
       this.y = 200;
+      clearInterval(animation);
     }
   }
 

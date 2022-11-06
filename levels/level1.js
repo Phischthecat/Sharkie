@@ -2,11 +2,14 @@ const level1 = new Level(
   [
     new Endboss(),
     new Jellyfish(350, 'lila'),
-    new Jellyfish(1150, 'lila'),
     new Pufferfish(800, 135, 'green'),
     new Pufferfish(800, 265, 'redblue'),
-    // new Pufferfish(800, 190, 'redblue'),
-    // new Pufferfish(800, 240, 'green'),
+    new Jellyfish(1150, 'lila'),
+    new Jellyfish(1250, 'lila'),
+    new Pufferfish(1600, 20, 'pink'),
+    new Pufferfish(1600, 115, 'pink'),
+    new Pufferfish(1600, 210, 'pink'),
+    new Pufferfish(1600, 305, 'pink'),
     new Jellyfish(3700, 'pink'),
     new Jellyfish(3800, 'pink'),
   ],
@@ -81,9 +84,11 @@ const level1 = new Level(
     // new CollectableObject(1500, 60, 50, 'poisonBottle'),
   ],
   [
-    new Barrier(450, 0, 700, 150, 'top'),
-    new Barrier(450, 340, 700, 150, 'bottom'),
+    new Barrier(450, 700, 150, 'up', 'top'),
+    new Barrier(450, 700, 150, 'down', 'bottom'),
+    new Barrier(1350, 350, 150, 'down', 'rock'),
 
-    new Barrier(3900, 150, 150, 380, 'pillar'),
+    new Barrier(3900, 150, 380, 'down', 'pillar'),
+    new Barrier(3850, 250, 150, 'down', 'rock'),
   ]
 );
