@@ -137,13 +137,21 @@ class Character extends MovableObject {
   }
 
   isCollidingCharacterWithBarrier(side) {
-    if (
-      this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
-      this.isCollidingWithBarrier(this.world.level.barriers[1]) != side &&
-      this.isCollidingWithBarrier(this.world.level.barriers[2]) != side
-    ) {
-      return true;
-    }
+    // if (
+    //   this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[1]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[2]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[3]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[4]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[5]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[6]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[7]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[8]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[9]) != side &&
+    //   this.isCollidingWithBarrier(this.world.level.barriers[10]) != side
+    // ) {
+    return true;
+    // }
   }
 
   shootBubbles() {

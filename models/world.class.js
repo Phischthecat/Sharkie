@@ -11,6 +11,11 @@ class World {
     new Statusbar(20, 90, 'poison', 0),
   ];
   shootableObjects = [];
+  framework1 = { x: -100, y: 0, w: 5000, h: 20 };
+  framework2 = { x: -100, y: 460, w: 5000, h: 20 };
+  firstStageSolved = false;
+  secondStageSolved = false;
+  thirdStageSolved = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -32,7 +37,11 @@ class World {
       this.checkCollisions();
       this.createShootObjects();
       this.showLifeStatusbarForEndboss();
+      this.firstStage();
     }, 200);
+    setInterval(() => {
+      this.isCollidingWithOuterFramework();
+    }, 1000 / 60);
   }
 
   createShootObjects() {
@@ -65,18 +74,19 @@ class World {
   isBubbleCollidingWithEnemies() {
     this.shootableObjects.forEach((bubble, indexB) => {
       this.level.enemies.forEach((enemy, indexE) => {
-        if (bubble.isColliding(enemy) && enemy.species.includes('Jellyfish')) {
-          this.bubbleBursts(indexB);
-          this.killJellyfish(indexE);
-        } else if (
-          this.character.collectedPoison == 100 &&
-          bubble.isColliding(enemy) &&
-          enemy.species == 'endboss'
-        ) {
-          this.bubbleBursts(indexB);
-          this.hitEndboss(enemy);
-        } else if (bubble.isColliding(enemy)) {
-          this.bubbleBursts(indexB);
+        if (bubble.isColliding(enemy)) {
+          if (enemy.species.includes('Jellyfish')) {
+            this.bubbleBursts(indexB);
+            this.killJellyfish(indexE);
+          } else if (
+            this.character.collectedPoison == 100 &&
+            enemy.species == 'endboss'
+          ) {
+            this.bubbleBursts(indexB);
+            this.hitEndboss(enemy);
+          } else {
+            this.bubbleBursts(indexB);
+          }
         }
       });
     });
@@ -130,6 +140,18 @@ class World {
     });
   }
 
+  isCollidingWithOuterFramework() {
+    this.level.enemies.forEach((enemy) => {
+      if (
+        (this.isCollidingFramework(this.framework1, enemy) ||
+          this.isCollidingFramework(this.framework2, enemy)) &&
+        enemy.species.includes('Jellyfish')
+      ) {
+        enemy.otherDirection = !enemy.otherDirection;
+      }
+    });
+  }
+
   isPufferfishAgressive() {
     this.level.enemies.forEach((enemy) => {
       if (
@@ -165,19 +187,39 @@ class World {
         this.character.collectPoison();
         this.level.poisons[index].collected = true;
         sounds.collectPoisonBottle.play();
-        setTimeout(() => {
-          this.level.poisons.splice(index, 1);
-        }, 70);
+        this.stageSolved();
+        // setTimeout(() => {
+        //   this.level.poisons.splice(index, 1);
+        // }, 70);
         this.statusBar[2].setPercentage(this.character.collectedPoison);
       }
     });
+  }
+
+  stageSolved() {
+    if (this.level.poisons[0].collected) {
+      this.firstStageSolved = true;
+    }
+    if (this.level.poisons[2].collected) {
+      this.secondStageSolved = true;
+    }
+  }
+
+  firstStage() {
+    if (this.firstStageSolved && this.level.barriers[1].y < 400) {
+      this.level.barriers[1].y += 20;
+      console.log(this.level.barriers[1].y);
+    }
+    if (this.secondStageSolved && this.level.barriers[6].y < 200) {
+      this.level.barriers[6].y += 20;
+      console.log(this.level.barriers[6].y);
+    }
   }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // löscht alle objects zu beginn
 
     this.ctx.translate(this.camera_x, 0); //verschiebt den ctx (context) um camera_x nach links
-    this.drawFrameForCollision(this.ctx);
     this.addObjectstoMap(this.level.backgroundObjects);
     this.addObjectstoMap(this.level.barriers);
     this.addToMap(this.character); //fügt den character hinzu
@@ -189,6 +231,8 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectstoMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0); //fügt den character hinzu
+    this.drawFrameForCollision(this.framework1);
+    this.drawFrameForCollision(this.framework2);
 
     this.ctx.translate(-this.camera_x, 0); //verschiebt den ctx (context) wieder um camera_x nach rechts
     //wartet bis die bilder geladen sind und ruft dann immer wieder die draw()-Funktion auf
@@ -227,9 +271,12 @@ class World {
     }
   }
 
-  drawFrameForCollision(ctx) {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0, 20, 720, 20);
+  drawFrameForCollision(fw) {
+    this.ctx.beginPath();
+    this.ctx.rect(fw.x, fw.y, fw.w, fw.h);
+    this.ctx.closePath();
+    this.ctx.strokeStyle = 'transparent';
+    this.ctx.stroke();
   }
 
   bubbleBursts(index) {
@@ -251,5 +298,14 @@ class World {
     setTimeout(() => {
       this.level.enemies.splice(index, 1);
     }, 2500);
+  }
+
+  isCollidingFramework(fw, mo) {
+    return (
+      fw.x + fw.w > mo.x + mo.offset.left && // => right > left
+      fw.y + fw.h > mo.y + mo.offset.top && // => top > bottom
+      fw.x < mo.x + mo.width - mo.offset.right && // => left < right
+      fw.y < mo.y + mo.height - mo.offset.bottom // => top < bottom
+    );
   }
 }

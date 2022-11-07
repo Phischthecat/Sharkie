@@ -21,10 +21,10 @@ class CollectableObject extends DrawableObject {
   height = 40;
   collected = false;
 
-  constructor(x, width, height, type) {
+  constructor(x, y, width, height, type) {
     super().loadImages(this.changeImagesByType(type));
     this.x = x;
-    this.y = 0 + Math.random() * 350;
+    this.y = y;
     this.width = width;
     this.height = height;
     this.animate(type);
