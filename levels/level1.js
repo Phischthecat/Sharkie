@@ -88,8 +88,10 @@ const level1 = new Level(
     new CollectableObject(2000, 380, 60, 50, 'poisonBottle'),
     new CollectableObject(2300, 95, 60, 50, 'poisonBottle'),
     new CollectableObject(2600, 400, 60, 50, 'poisonBottle'),
-    new CollectableObject(2950, 40, 60, 50, 'poisonBottle'),
-    new CollectableObject(3950, 30, 60, 50, 'poisonBottle'),
+    new CollectableObject(3100, 220, 60, 50, 'poisonBottle'),
+    new CollectableObject(3300, 220, 60, 50, 'poisonBottle'),
+    new CollectableObject(3500, 220, 60, 50, 'poisonBottle'),
+    new CollectableObject(3700, 220, 60, 50, 'poisonBottle'),
   ],
   [
     new Barrier(450, 700, 150, 'up', 'top'),
@@ -102,7 +104,7 @@ const level1 = new Level(
     new Barrier(2150, 150, 330, 'up', 'pillar'),
     new Barrier(2450, 150, 280, 'down', 'pillar'),
     new Barrier(2800, 150, 360, 'up', 'pillar'),
-    new Barrier(3900, 150, 380, 'down', 'pillar'),
-    new Barrier(3900, 250, 150, 'down', 'rock'),
+    new Barrier(3900, 150, 280, 'down', 'pillar'),
+    new Barrier(3900, 150, 280, 'up', 'pillar'),
   ]
 );

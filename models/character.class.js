@@ -179,7 +179,7 @@ class Character extends MovableObject {
     }
   }
   collectPoison() {
-    this.collectedPoison += 20;
+    this.collectedPoison += 10;
     if (this.collectedPoison > 100) {
       this.collectedPoison = 100;
     }

@@ -37,7 +37,8 @@ class World {
       this.checkCollisions();
       this.createShootObjects();
       this.showLifeStatusbarForEndboss();
-      this.firstStage();
+      this.theThreeStages();
+      this.endbossFight();
     }, 200);
     setInterval(() => {
       this.isCollidingWithOuterFramework();
@@ -64,7 +65,7 @@ class World {
   }
 
   checkCollisions() {
-    this.isCollidingWithEnemies();
+    // this.isCollidingWithEnemies();
     this.collisionWithCoins();
     this.collisionWithPoison();
     this.isBubbleCollidingWithEnemies();
@@ -200,19 +201,41 @@ class World {
     if (this.level.poisons[0].collected) {
       this.firstStageSolved = true;
     }
-    if (this.level.poisons[2].collected) {
+    if (this.level.poisons[1].collected && this.level.poisons[2].collected) {
       this.secondStageSolved = true;
+    }
+    if (
+      this.level.poisons[3].collected &&
+      this.level.poisons[4].collected &&
+      this.level.poisons[5].collected &&
+      this.level.poisons[6].collected &&
+      this.level.poisons[7].collected &&
+      this.level.poisons[8].collected &&
+      this.level.poisons[9].collected
+    ) {
+      this.thirdStageSolved = true;
     }
   }
 
-  firstStage() {
+  theThreeStages() {
     if (this.firstStageSolved && this.level.barriers[1].y < 400) {
       this.level.barriers[1].y += 20;
-      console.log(this.level.barriers[1].y);
     }
     if (this.secondStageSolved && this.level.barriers[6].y < 200) {
       this.level.barriers[6].y += 20;
-      console.log(this.level.barriers[6].y);
+    }
+    if (this.thirdStageSolved && this.level.barriers[10].y < 290) {
+      this.level.barriers[10].y += 20;
+      this.level.barriers[11].y -= 20;
+    }
+  }
+
+  endbossFight() {
+    if (this.character.hadFirstContact && this.level.barriers[10].y > 200) {
+      this.level.barriers[10].y -= 20;
+      this.level.barriers[11].y += 20;
+      console.log(this.level.barriers[10].y);
+      console.log(this.level.barriers[11].y);
     }
   }
 
