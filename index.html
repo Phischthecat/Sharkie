@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="shortcut icon" href="img/favicon/1.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
     <script src="models/keyboard.class.js"></script>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
@@ -26,7 +30,74 @@
     <title>Sharkie</title>
   </head>
   <body onload="init()">
-    <h1 aria-label="sharkie"></h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div class="startScreen">
+      <div class="overlay">
+        <div>
+          <h1 aria-label="sharkie"></h1>
+        </div>
+        <div class="btnContainer">
+          <span class="btn startBtn" onclick="start()">Start</span>
+          <span class="btn infoBtn" onclick="introduction()">Info</span>
+        </div>
+        <div id="pop-up" class="d-none pop-up">
+          <div class="introduction-container hide-scrollbar">
+            <header>
+              <h2>How to play?</h2>
+              <i onclick="introduction()" class="fa-solid fa-x"></i>
+            </header>
+            <hr />
+            <p>
+              The game is divided into 3 different areas - <br />
+              the tunnel of death, the up-n-down labyrinth and the electro
+              jellyfish seas. <br />
+              To complete the areas and progress, you must collect
+              <img
+                src="./img/4. Marcadores/Posión/Animada/1.png"
+                alt="poison bottle"
+                title="poison bottle"
+              />.
+              <br />
+              Your movement speed increases a little each time you collect 2
+              <img
+                src="./img/4. Marcadores/1. Coins/1.png"
+                alt="coins"
+                title="coins"
+              />.
+            </p>
+            <br />
+            <h2>How to defeat the enemies?</h2>
+            <hr />
+            <p>
+              You have 2 ways to fight the enemies. If you press the SPACEBAR or
+              E, you shoot an
+              <img
+                src="./img/1.Sharkie/4.Attack/Bubble trap/Bubble.png"
+                alt="air bubble"
+                title="air bubble"
+              />
+              and can trap enemies in it. The enemy is no longer a threat.
+              <br />
+              If
+              <img
+                src="./img/1.Sharkie/4.Attack/Bubble trap/Bubble.png"
+                alt="air bubble"
+                title="air bubble"
+              />
+              are ineffective, try pressing Q nearby and hit him with your tail
+              fin.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="game-container" id="game-container">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <div id="mobile-btn-mobile-btn"></div>
+      <div class="settings">
+        <div onclick="openFullscreen()" class="fullscreen">
+          <i class="fa-solid fa-expand"></i>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

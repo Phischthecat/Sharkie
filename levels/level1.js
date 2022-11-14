@@ -82,7 +82,7 @@ const level1 = new Level(
     new CollectableObject(1920, 140, 40, 40, 'coin'),
   ],
   [
-    new CollectableObject(250, 400, 60, 50, 'poisonBottle'),
+    new CollectableObject(230, 310, 60, 50, 'poisonBottle'),
     new CollectableObject(800, 195, 60, 50, 'poisonBottle'),
     new CollectableObject(1750, 400, 60, 50, 'poisonBottle'),
     new CollectableObject(2000, 380, 60, 50, 'poisonBottle'),

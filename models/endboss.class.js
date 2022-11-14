@@ -20,7 +20,7 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    let endboss_animation = setInterval(() => {
+    setInterval(() => {
       if (this.hadFirstContact) {
         if (this.i < 10) {
           this.playAnimation(this.IMAGES_INTRO);
@@ -28,7 +28,7 @@ class Endboss extends MovableObject {
           this.endbossKilled(endboss_animation);
         } else if (this.isHurt()) {
           this.playAnimation(this.IMAGES_HURT);
-        } else if (!this.isHurt()) {
+        } else if (!this.isHurt() && this.distance() < 500) {
           this.isAttacking();
         } else {
           this.playAnimation(this.IMAGES_FLOATING);
@@ -38,22 +38,33 @@ class Endboss extends MovableObject {
     }, 150);
   }
 
-  endbossKilled(endboss_animation) {
+  endbossKilled() {
     this.isKilled = true;
     if (this.dead < this.IMAGES_DEAD.length - 1) {
       this.playAnimation(this.IMAGES_DEAD);
       this.y += 20;
     } else {
       this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-      clearInterval(endboss_animation);
+      clearAllIntervals();
+      sounds.endbossMusic.pause();
+      this.winningScreen();
     }
     this.dead++;
   }
 
   isAttacking() {
     this.playAnimation(this.IMAGES_ATTACK);
-    this.x -= 1 + Math.random() * 7;
-    world.level.level_end_x = this.x;
+    if (this.x < 4000 || this.x > world.character.x) {
+      this.x -= 1 + Math.random() * 7;
+      this.otherDirection = false;
+    } else {
+      this.otherDirection = true;
+      this.x += 1 + Math.random() * 7;
+    }
+  }
+
+  distance() {
+    return this.centerX() - world.character.centerX();
   }
 
   firstContact() {

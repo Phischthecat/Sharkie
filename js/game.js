@@ -14,6 +14,8 @@ let sounds = {
   endbossHurt: new Audio('audio/endboss_hurt.mp3'),
   endbossMusic: new Audio('audio/endboss_music.mp3'),
   electroZap: new Audio('audio/zap.mp3'),
+  fallingRock: new Audio('audio/falling-rocks.mp3'),
+  movingPillar: new Audio('audio/moving-pillar.mp3'),
 };
 
 function init() {
@@ -26,57 +28,31 @@ function init() {
   console.log('barriers are ', world.level.barriers);
 }
 
-window.addEventListener('keydown', (event) => {
-  if (event.keyCode == 32) {
-    keyboard.SPACE = true;
-  }
-  if (event.keyCode == 37) {
-    keyboard.LEFT = true;
-  }
-  if (event.keyCode == 38) {
-    keyboard.UP = true;
-  }
-  if (event.keyCode == 39) {
-    keyboard.RIGHT = true;
-  }
-  if (event.keyCode == 40) {
-    keyboard.DOWN = true;
-  }
+function start() {
+  document.querySelector('.startScreen').classList.add('slide-out-fwd-center');
+  document.querySelector('.overlay').classList.add('d-none');
+}
 
-  if (event.keyCode == 69) {
-    keyboard.E = true;
-  }
-  if (event.keyCode == 81) {
-    keyboard.Q = true;
-  }
-});
+function introduction() {
+  document.getElementById('pop-up').classList.toggle('d-none');
+}
 
-window.addEventListener('keyup', (event) => {
-  if (event.keyCode == 32) {
-    keyboard.SPACE = false;
+function openFullscreen() {
+  let gameContainer = document.getElementById('game-container');
+  if (gameContainer.requestFullscreen) {
+    gameContainer.requestFullscreen();
+  } else if (gameContainer.webkitRequestFullscreen) {
+    /* Safari */
+    gameContainer.webkitRequestFullscreen();
+  } else if (gameContainer.msRequestFullscreen) {
+    /* IE11 */
+    gameContainer.msRequestFullscreen();
   }
-  if (event.keyCode == 37) {
-    keyboard.LEFT = false;
-  }
-  if (event.keyCode == 38) {
-    keyboard.UP = false;
-  }
-  if (event.keyCode == 39) {
-    keyboard.RIGHT = false;
-  }
-  if (event.keyCode == 40) {
-    keyboard.DOWN = false;
-  }
-  if (event.keyCode == 69) {
-    keyboard.E = false;
-  }
-  if (event.keyCode == 81) {
-    keyboard.Q = false;
-  }
+}
 
-  world.character.currentImage = 0;
-  world.character.attack = 0;
-});
+function clearAllIntervals() {
+  for (let i = 1; i < 9999; i++) window.clearInterval(i);
+}
 
 function soundSetting() {
   sounds.swimming.volume = 0.2;
@@ -94,4 +70,6 @@ function soundSetting() {
   sounds.endbossMusic.volume = 0.3;
   sounds.endbossMusic.loop = true;
   sounds.electroZap.volume = 0.3;
+  sounds.fallingRock.volume = 0.3;
+  sounds.movingPillar.volume = 0.8;
 }

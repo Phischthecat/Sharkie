@@ -37,8 +37,7 @@ class World {
       this.checkCollisions();
       this.createShootObjects();
       this.showLifeStatusbarForEndboss();
-      this.theThreeStages();
-      this.endbossFight();
+      this.allStages();
     }, 200);
     setInterval(() => {
       this.isCollidingWithOuterFramework();
@@ -65,7 +64,7 @@ class World {
   }
 
   checkCollisions() {
-    // this.isCollidingWithEnemies();
+    this.isCollidingWithEnemies();
     this.collisionWithCoins();
     this.collisionWithPoison();
     this.isBubbleCollidingWithEnemies();
@@ -76,33 +75,26 @@ class World {
     this.shootableObjects.forEach((bubble, indexB) => {
       this.level.enemies.forEach((enemy, indexE) => {
         if (bubble.isColliding(enemy)) {
-          if (enemy.species.includes('Jellyfish')) {
-            this.bubbleBursts(indexB);
-            this.killJellyfish(indexE);
-          } else if (
-            this.character.collectedPoison == 100 &&
-            enemy.species == 'endboss'
-          ) {
-            this.bubbleBursts(indexB);
-            this.hitEndboss(enemy);
-          } else {
-            this.bubbleBursts(indexB);
-          }
+          this.bubbleBursts(indexB);
+          this.killJellyfish(enemy, indexE);
+          this.hitEndboss(enemy);
         }
       });
     });
   }
 
   hitEndboss(enemy) {
-    enemy.hit(10);
-    sounds.endbossHurt.play();
-    this.statusBar[3].setPercentage(enemy.energy);
+    if (this.character.collectedPoison == 100 && enemy.species == 'endboss') {
+      enemy.hit(10);
+      sounds.endbossHurt.play();
+      this.statusBar[3].setPercentage(enemy.energy);
+    }
   }
 
   showLifeStatusbarForEndboss() {
     if (this.character.x > 4000) {
       this.statusBar.push(
-        new Statusbar(600, -10, 'life', this.level.enemies[0].energy)
+        new Statusbar(600, -10, 'life', this.level.enemies[18].energy)
       );
     }
   }
@@ -217,26 +209,64 @@ class World {
     }
   }
 
-  theThreeStages() {
+  allStages() {
+    this.firstStage();
+    this.secondStage();
+    this.thirdStage();
+    this.endbossStage();
+  }
+
+  firstStage() {
     if (this.firstStageSolved && this.level.barriers[1].y < 400) {
       this.level.barriers[1].y += 20;
-    }
-    if (this.secondStageSolved && this.level.barriers[6].y < 200) {
-      this.level.barriers[6].y += 20;
-    }
-    if (this.thirdStageSolved && this.level.barriers[10].y < 290) {
-      this.level.barriers[10].y += 20;
-      this.level.barriers[11].y -= 20;
+      sounds.fallingRock.play();
+      sounds.movingPillar.play();
     }
   }
 
-  endbossFight() {
-    if (this.character.hadFirstContact && this.level.barriers[10].y > 200) {
+  secondStage() {
+    if (this.secondStageSolved && this.level.barriers[6].y < 200) {
+      this.level.barriers[6].y += 20;
+      sounds.fallingRock.play();
+      sounds.movingPillar.play();
+    }
+  }
+
+  thirdStage() {
+    if (
+      this.thirdStageSolved &&
+      this.level.barriers[10].y < 290 &&
+      !this.level.enemies[this.level.enemies.length - 1].hadFirstContact
+    ) {
+      this.level.barriers[10].y += 5;
+      this.level.barriers[11].y -= 5;
+      sounds.fallingRock.play();
+      sounds.movingPillar.play();
+    }
+  }
+
+  endbossStage() {
+    if (
+      this.level.enemies[this.level.enemies.length - 1].hadFirstContact &&
+      this.level.barriers[10].y > 220
+    ) {
       this.level.barriers[10].y -= 20;
       this.level.barriers[11].y += 20;
-      console.log(this.level.barriers[10].y);
-      console.log(this.level.barriers[11].y);
+      this.soundFadeOut('fallingRock');
+      this.soundFadeOut('movingPillar');
     }
+  }
+
+  soundFadeOut(soundEffect) {
+    sounds[soundEffect].play();
+    let fadeOut = setInterval(() => {
+      if (sounds[soundEffect].volume > 0.01) {
+        sounds[soundEffect].volume -= 0.01;
+      } else {
+        clearInterval(fadeOut);
+        sounds[soundEffect].pause();
+      }
+    }, 200);
   }
 
   draw() {
@@ -307,13 +337,15 @@ class World {
     sounds.bubble_pop.play();
   }
 
-  killJellyfish(index) {
-    this.level.enemies[index].isKilled = true;
-    this.level.enemies[index].applyUplift();
-    sounds.deadJelly.play();
-    setTimeout(() => {
-      this.level.enemies.splice(index, 1);
-    }, 2500);
+  killJellyfish(enemy, index) {
+    if (enemy.species.includes('Jellyfish')) {
+      this.level.enemies[index].isKilled = true;
+      this.level.enemies[index].applyUplift();
+      sounds.deadJelly.play();
+      setTimeout(() => {
+        this.level.enemies.splice(index, 1);
+      }, 2500);
+    }
   }
 
   killPufferfish(index) {

@@ -36,9 +36,9 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    let character_animation = setInterval(() => {
+    setInterval(() => {
       if (this.isDead()) {
-        this.isDying(character_animation);
+        this.isDying();
       } else if (this.isHurt()) {
         this.isInjured();
       } else if (
@@ -61,25 +61,26 @@ class Character extends MovableObject {
     }, 150);
   }
 
-  isDying(character_animation) {
+  isDying() {
     if (this.electroHit) {
-      this.getElectroShock(character_animation);
+      this.getElectroShock();
     } else {
-      this.isPoisoned(character_animation);
+      this.isPoisoned();
     }
     this.dead++;
   }
 
-  isPoisoned(animation) {
+  isPoisoned() {
     if (this.dead < this.IMAGES_DEAD.length - 1) {
       this.playAnimation(this.IMAGES_DEAD);
     } else {
       this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-      clearInterval(animation);
+      clearAllIntervals();
+      this.GameoverScreen();
     }
   }
 
-  getElectroShock(animation) {
+  getElectroShock() {
     if (this.dead < this.IMAGES_DEAD_ELECTRO.length - 1) {
       this.playAnimation(this.IMAGES_DEAD_ELECTRO);
       this.y -= 10;
@@ -88,7 +89,8 @@ class Character extends MovableObject {
         this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD_ELECTRO.length - 1]
       );
       this.y = 200;
-      clearInterval(animation);
+      clearAllIntervals();
+      this.GameoverScreen();
     }
   }
 
