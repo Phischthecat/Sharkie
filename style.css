@@ -3,6 +3,12 @@
   src: url('img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf') format('truetype');
 }
 
+:root {
+  --mainBackgroundColor: rgba(0, 0, 0, 0.9);
+  --btnBackgroundColor: #7fffe0;
+  --btnTextColor: #531a82;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -14,16 +20,16 @@ body {
   justify-content: space-evenly;
   align-items: center;
   height: 100vh;
-  background: #3f81b3 url('img/3. Background/Layers/5. Water/D1.png') no-repeat
-    center;
+  background: url('img/3. Background/Layers/5. Water/D1.png') no-repeat center;
   background-size: cover;
   overflow: hidden;
   font-family: 'LuckiestGuy', Arial, sans-serif;
   font-size: 16px;
+  color: var(--btnTextColor);
 }
 
 canvas {
-  background-color: black;
+  background-color: var(--mainBackgroundColor);
   display: block;
   z-index: 2;
 }
@@ -40,14 +46,12 @@ canvas {
 }
 
 .startScreen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
   z-index: 3;
 }
 
@@ -59,8 +63,58 @@ canvas {
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-  background: #3f81b3 url('img/3. Background/Light/1.png') no-repeat center;
+  background: url('img/3. Background/Light/1.png') no-repeat center;
   background-size: cover;
+}
+
+.pop-up,
+.winnerScreen,
+.gameOverScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.winnerScreen,
+.gameOverScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--mainBackgroundColor);
+}
+
+.gameOverScreen {
+  align-items: unset;
+}
+
+.restartBtn {
+  position: absolute;
+  bottom: 30px;
+  height: 100px;
+  width: 100px;
+}
+
+.winnerScreen img {
+  width: 100%;
+  height: 480px;
+}
+.imgContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.deadSharkie {
+  height: 7rem;
+  width: 13rem;
+}
+
+.gameOverText {
+  width: 100%;
+  padding: 0 40px;
 }
 
 .btnContainer {
@@ -73,34 +127,33 @@ canvas {
 
 .btn {
   border-radius: 100%;
-  border: 5px solid white;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  border: 5px solid var(--btnTextColor);
+  background-color: var(--btnBackgroundColor);
+  color: var(--btnTextColor);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: all 225ms;
 }
 
 .startBtn {
-  cursor: pointer;
   width: 100px;
   height: 100px;
   font-size: 25px;
 }
 
 .infoBtn {
-  cursor: pointer;
   width: 75px;
   height: 75px;
   font-size: 20px;
 }
 
-.infoBtn:hover,
-.startBtn:hover {
-  border: 5px solid rgba(0, 0, 0);
-  background-color: rgba(255, 255, 255, 0.6);
-  color: rgba(0, 0, 0);
+.btn:hover,
+.btn:active {
+  border: 5px solid var(--btnBackgroundColor);
+  background-color: var(--btnTextColor);
+  color: var(--btnBackgroundColor);
 }
 
 header {
@@ -122,7 +175,8 @@ header i {
   padding: 35px;
   overflow: auto;
   border-radius: 20px;
-  background: whitesmoke;
+  background: var(--mainBackgroundColor);
+  color: var(--btnBackgroundColor);
   box-shadow: 12px 12px 10px 5px rgb(0 0 0 / 20%);
 }
 
@@ -131,13 +185,50 @@ header i {
   font-weight: 400;
 }
 
+.introduction-container h2 {
+  color: var(--btnTextColor);
+}
+
+.introduction-container h2,
+.introduction-container p span {
+  text-shadow: 2px 2px var(--btnBackgroundColor);
+}
+
+.introduction-container p span {
+  color: var(--btnTextColor);
+  font-size: 26px;
+  vertical-align: middle;
+  margin: 5px;
+}
+
 .introduction-container p img {
-  width: 30px;
+  margin: 5px;
   vertical-align: middle;
 }
 
+.arrow-keys {
+  height: 30px;
+  width: 45px;
+}
+.poison-bottle {
+  width: 45px;
+  height: 60px;
+  margin: -15px 0 !important;
+  vertical-align: baseline !important;
+}
+
+.air-bubble,
+.coins {
+  width: 30px;
+  height: 30px;
+}
+
 .game-container {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 .settings {
@@ -157,7 +248,7 @@ h1 {
   position: relative;
   font-size: calc(10px + 5vw);
   font-weight: 700;
-  color: #f5f5f5;
+  color: var(--btnTextColor);
   letter-spacing: 0.09em;
   text-transform: uppercase;
   perspective: 500px;
@@ -188,6 +279,166 @@ h1::after {
   clip-path: polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%);
 }
 
+.slide-out-fwd-center {
+  -webkit-animation: slide-out-fwd-center 0.7s
+    cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  animation: slide-out-fwd-center 0.7s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+}
+
+.mobile-btnContainer {
+  position: absolute;
+  bottom: 20px;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  z-index: 2;
+}
+
+.leftContainer {
+  left: 20px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+
+.leftBtns {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  font-size: 40px;
+}
+
+.rightContainer {
+  right: 40px;
+  gap: 20px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+}
+
+.rightBtns {
+  border-radius: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  -moz-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+}
+
+.finSlap,
+.bubbleShoot {
+  height: 45px;
+  width: auto;
+}
+
+.mobileBtns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+}
+
+.turnThePhone {
+  display: none;
+}
+
+.d-none {
+  display: none;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+@media (max-width: 916px) and (max-height: 480px),
+  (max-width: 720px) and (orientation: landscape) {
+  canvas {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+  }
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-btnContainer {
+    display: grid;
+  }
+  .introduction-container {
+    position: unset;
+    border-radius: unset;
+  }
+
+  .winnerScreen img {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 480px) and (orientation: portrait) {
+  canvas,
+  .overlay {
+    width: 100%;
+    height: 100%;
+  }
+
+  .turnThePhone {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--mainBackgroundColor);
+    color: white;
+  }
+
+  .turnThePhone i {
+    font-size: 160px;
+  }
+
+  .turnThePhone span {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .rotate-90-ccw {
+    -webkit-animation: rotate-90-ccw 1.2s ease-in-out infinite alternate both;
+    animation: rotate-90-ccw 1.2s ease-in-out infinite alternate both;
+  }
+}
+
+@-webkit-keyframes rotate-90-ccw {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+}
+@keyframes rotate-90-ccw {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+}
+
 @keyframes floatAbove {
   50% {
     transform: translate(-50%, -60%);
@@ -202,13 +453,6 @@ h1::after {
     -webkit-clip-path: polygon(0% 60%, 100% 60%, 100% 100%, 0% 100%);
     clip-path: polygon(0% 60%, 100% 60%, 100% 100%, 0% 100%);
   }
-}
-
-.slide-out-fwd-center {
-  -webkit-animation: slide-out-fwd-center 0.7s
-    cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
-  animation: slide-out-fwd-center 0.7s cubic-bezier(0.55, 0.085, 0.68, 0.53)
-    both;
 }
 
 @-webkit-keyframes slide-out-fwd-center {
@@ -233,27 +477,5 @@ h1::after {
     -webkit-transform: translateZ(600px);
     transform: translateZ(600px);
     opacity: 0;
-  }
-}
-
-.d-none {
-  display: none;
-}
-
-@media screen and (max-width: 720px) {
-  canvas {
-    width: 100%;
-  }
-  .startScreen img {
-    width: 100%;
-  }
-}
-@media screen and (max-height: 480px) {
-  canvas {
-    height: 100vh;
-  }
-
-  .startScreen img {
-    width: 100%;
   }
 }

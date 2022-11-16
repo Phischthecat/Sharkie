@@ -1,20 +1,20 @@
 class CollectableObject extends DrawableObject {
   IMAGES_COIN = [
-    'img/4. Marcadores/1. Coins/1.png',
-    'img/4. Marcadores/1. Coins/2.png',
-    'img/4. Marcadores/1. Coins/3.png',
-    'img/4. Marcadores/1. Coins/4.png',
+    'img/4. Marcadores/coins/1.png',
+    'img/4. Marcadores/coins/2.png',
+    'img/4. Marcadores/coins/3.png',
+    'img/4. Marcadores/coins/4.png',
   ];
 
   IMAGES_POISON_BOTTLE = [
-    'img/4. Marcadores/Posión/Animada/1.png',
-    'img/4. Marcadores/Posión/Animada/2.png',
-    'img/4. Marcadores/Posión/Animada/3.png',
-    'img/4. Marcadores/Posión/Animada/4.png',
-    'img/4. Marcadores/Posión/Animada/5.png',
-    'img/4. Marcadores/Posión/Animada/6.png',
-    'img/4. Marcadores/Posión/Animada/7.png',
-    'img/4. Marcadores/Posión/Animada/8.png',
+    'img/4. Marcadores/posion/1.png',
+    'img/4. Marcadores/posion/2.png',
+    'img/4. Marcadores/posion/3.png',
+    'img/4. Marcadores/posion/4.png',
+    'img/4. Marcadores/posion/5.png',
+    'img/4. Marcadores/posion/6.png',
+    'img/4. Marcadores/posion/7.png',
+    'img/4. Marcadores/posion/8.png',
   ];
 
   width = 40;

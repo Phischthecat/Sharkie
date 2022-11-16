@@ -4,11 +4,11 @@ class Keyboard {
   LEFT = false;
   RIGHT = false;
   SPACE = false;
-  E = false;
-  Q = false;
+  D = false;
 
   constructor() {
     this.forMovingWithKeyboard();
+    this.forMovingWithTouch();
   }
 
   forMovingWithKeyboard() {
@@ -28,11 +28,8 @@ class Keyboard {
       if (event.keyCode == 40) {
         this.DOWN = true;
       }
-      if (event.keyCode == 69) {
-        this.E = true;
-      }
-      if (event.keyCode == 81) {
-        this.Q = true;
+      if (event.keyCode == 68) {
+        this.D = true;
       }
     });
 
@@ -52,11 +49,8 @@ class Keyboard {
       if (event.keyCode == 40) {
         this.DOWN = false;
       }
-      if (event.keyCode == 69) {
-        this.E = false;
-      }
-      if (event.keyCode == 81) {
-        this.Q = false;
+      if (event.keyCode == 68) {
+        this.D = false;
       }
 
       world.character.currentImage = 0;
@@ -64,5 +58,74 @@ class Keyboard {
     });
   }
 
-  forMovingWithTouch() {}
+  forMovingWithTouch() {
+    document.getElementById('mobileUp').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.UP = true;
+    });
+    document.getElementById('mobileUp').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.UP = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+    document
+      .getElementById('mobileDown')
+      .addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.DOWN = true;
+      });
+    document.getElementById('mobileDown').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.DOWN = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+    document
+      .getElementById('mobileLeft')
+      .addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.LEFT = true;
+      });
+    document.getElementById('mobileLeft').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.LEFT = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+    document
+      .getElementById('mobileRight')
+      .addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.RIGHT = true;
+      });
+    document.getElementById('mobileRight').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.RIGHT = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+    document
+      .getElementById('bubbleShoot')
+      .addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.SPACE = true;
+      });
+    document.getElementById('bubbleShoot').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.SPACE = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+    document.getElementById('finSlap').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.D = true;
+    });
+    document.getElementById('finSlap').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.D = false;
+      world.character.currentImage = 0;
+      world.character.attack = 0;
+    });
+  }
 }

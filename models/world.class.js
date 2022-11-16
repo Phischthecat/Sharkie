@@ -6,9 +6,9 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = [
-    new Statusbar(20, -10, 'life', 100),
-    new Statusbar(20, 40, 'coins', 0),
-    new Statusbar(20, 90, 'poison', 0),
+    new Statusbar(20, -10, 150, 50, 'life', 100),
+    new Statusbar(20, 40, 150, 50, 'coins', 0),
+    new Statusbar(20, 90, 150, 50, 'poison', 0),
   ];
   shootableObjects = [];
   framework1 = { x: -100, y: 0, w: 5000, h: 20 };
@@ -27,12 +27,12 @@ class World {
   }
 
   setWorld() {
-    this.level.world = this;
     this.character.world = this; //übergibt die aktuelle instanz von world an alle movableObjects (aktuell nur character)
   }
 
   run() {
     setInterval(() => {
+      endScreen();
       this.isPufferfishAgressive();
       this.checkCollisions();
       this.createShootObjects();
@@ -45,7 +45,7 @@ class World {
   }
 
   createShootObjects() {
-    if (this.keyboard.SPACE && this.character.attack > 7) {
+    if (this.keyboard.SPACE && this.character.attack == 7) {
       let bubble;
       if (!this.character.otherDirection) {
         bubble = new ShootableObject(
@@ -94,7 +94,7 @@ class World {
   showLifeStatusbarForEndboss() {
     if (this.character.x > 4000) {
       this.statusBar.push(
-        new Statusbar(600, -10, 'life', this.level.enemies[18].energy)
+        new Statusbar(260, 400, 200, 75, 'life', this.level.enemies[18].energy)
       );
     }
   }

@@ -14,17 +14,17 @@ class ShootableObject extends MovableObject {
     if (!world.character.otherDirection) {
       setInterval(() => {
         this.x += 5;
-        this.y += 0.05;
+        this.y -= 0.1;
       }, 25);
     } else {
       setInterval(() => {
         this.x -= 5;
-        this.y -= 0.05;
+        this.y += 0.1;
       }, 25);
     }
     setTimeout(() => {
       this.applyUplift();
-    }, 2000);
+    }, 1500);
   }
 
   changeToPoisonBubble() {

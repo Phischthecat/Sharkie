@@ -3,7 +3,7 @@ class Character extends MovableObject {
   world;
   isPaused = false;
   collectedCoins = 0;
-  collectedPoison = 100;
+  collectedPoison = 0;
   electroHit = false;
   offset = {
     top: 120,
@@ -49,13 +49,14 @@ class Character extends MovableObject {
       ) {
         this.playAnimation(this.IMAGES_SWIM);
         sounds.swimming.play();
-      } else if (this.world.keyboard.SPACE || this.world.keyboard.E) {
+      } else if (this.world.keyboard.SPACE) {
         this.shootBubbles();
-      } else if (this.world.keyboard.Q) {
+      } else if (this.world.keyboard.D) {
         this.slapEnemy();
       } else {
         this.playAnimation(this.IMAGES_IDLE);
         this.isPaused = false;
+        this.electroHit = false;
         this.attack = 0;
       }
     }, 150);
@@ -75,8 +76,7 @@ class Character extends MovableObject {
       this.playAnimation(this.IMAGES_DEAD);
     } else {
       this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-      clearAllIntervals();
-      this.GameoverScreen();
+      gameOver = true;
     }
   }
 
@@ -89,8 +89,8 @@ class Character extends MovableObject {
         this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD_ELECTRO.length - 1]
       );
       this.y = 200;
-      clearAllIntervals();
-      this.GameoverScreen();
+
+      gameOver = true;
     }
   }
 
@@ -188,12 +188,12 @@ class Character extends MovableObject {
   }
 
   IMAGES_SWIM = [
-    '../img/1.Sharkie/3.Swim/1.png',
-    '../img/1.Sharkie/3.Swim/2.png',
-    '../img/1.Sharkie/3.Swim/3.png',
-    '../img/1.Sharkie/3.Swim/4.png',
-    '../img/1.Sharkie/3.Swim/5.png',
-    '../img/1.Sharkie/3.Swim/6.png',
+    'img/1.Sharkie/3.Swim/1.png',
+    'img/1.Sharkie/3.Swim/2.png',
+    'img/1.Sharkie/3.Swim/3.png',
+    'img/1.Sharkie/3.Swim/4.png',
+    'img/1.Sharkie/3.Swim/5.png',
+    'img/1.Sharkie/3.Swim/6.png',
   ];
 
   IMAGES_IDLE = [
@@ -215,23 +215,6 @@ class Character extends MovableObject {
     'img/1.Sharkie/1.IDLE/16.png',
     'img/1.Sharkie/1.IDLE/17.png',
     'img/1.Sharkie/1.IDLE/18.png',
-  ];
-
-  IMAGES_LONG_IDLE = [
-    'img/1.Sharkie/2.Long_IDLE/i1.png',
-    'img/1.Sharkie/2.Long_IDLE/i2.png',
-    'img/1.Sharkie/2.Long_IDLE/i3.png',
-    'img/1.Sharkie/2.Long_IDLE/i4.png',
-    'img/1.Sharkie/2.Long_IDLE/i5.png',
-    'img/1.Sharkie/2.Long_IDLE/i6.png',
-    'img/1.Sharkie/2.Long_IDLE/i7.png',
-    'img/1.Sharkie/2.Long_IDLE/i8.png',
-    'img/1.Sharkie/2.Long_IDLE/i9.png',
-    'img/1.Sharkie/2.Long_IDLE/i10.png',
-    'img/1.Sharkie/2.Long_IDLE/i11.png',
-    'img/1.Sharkie/2.Long_IDLE/i12.png',
-    'img/1.Sharkie/2.Long_IDLE/i13.png',
-    'img/1.Sharkie/2.Long_IDLE/i14.png',
   ];
 
   IMAGES_BUBBLETRAP = [

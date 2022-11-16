@@ -1,6 +1,8 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard;
+let gameOver = false;
+let winner = false;
 let sounds = {
   swimming: new Audio('audio/swim.mp3'),
   collectCoin: new Audio('audio/coin.mp3'),
@@ -20,6 +22,7 @@ let sounds = {
 
 function init() {
   canvas = document.getElementById('canvas');
+  keyboard = new Keyboard();
   world = new World(canvas, keyboard); //neue Welt mit der Variable canvas (das HTML Element), damit wir in der Welt das canvas zu greifen können
 
   soundSetting();
@@ -30,11 +33,16 @@ function init() {
 
 function start() {
   document.querySelector('.startScreen').classList.add('slide-out-fwd-center');
-  document.querySelector('.overlay').classList.add('d-none');
+  document.getElementById('btnsLeft').classList.remove('d-none');
+  document.getElementById('btnsRight').classList.remove('d-none');
+  setTimeout(() => {
+    document.querySelector('.startScreen').classList.add('d-none');
+  }, 200);
 }
 
 function introduction() {
   document.getElementById('pop-up').classList.toggle('d-none');
+  document.body.classList.toggle('overflow-auto');
 }
 
 function openFullscreen() {
@@ -48,6 +56,33 @@ function openFullscreen() {
     /* IE11 */
     gameContainer.msRequestFullscreen();
   }
+}
+
+function endScreen() {
+  if (gameOver) {
+    sounds.ambience.pause();
+    clearAllIntervals();
+    document.getElementById('loose').classList.remove('d-none');
+    document
+      .querySelector('.startScreen')
+      .classList.remove('slide-out-fwd-center', 'd-none');
+  }
+  if (winner) {
+    sounds.ambience.pause();
+    clearAllIntervals();
+    document.getElementById('win').classList.remove('d-none');
+    document
+      .querySelector('.startScreen')
+      .classList.remove('slide-out-fwd-center', 'd-none');
+  }
+}
+
+function restart() {
+  gameOver = false;
+  winner = false;
+  init();
+  document.getElementById('loose').classList.add('d-none');
+  document.getElementById('win').classList.add('d-none');
 }
 
 function clearAllIntervals() {

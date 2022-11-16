@@ -1,14 +1,17 @@
 class Statusbar extends DrawableObject {
   percentage;
   type;
+  width;
+  height;
 
-  constructor(x, y, type, percentage) {
+  constructor(x, y, width, height, type, percentage) {
     super().loadImages(this.changeImagesByType(type));
     this.x = x;
     this.y = y;
     this.type = type;
-    this.width = 100;
-    this.height = 50;
+    this.width = width;
+    this.height = height;
+
     this.setPercentage(percentage);
   }
 
@@ -45,29 +48,29 @@ class Statusbar extends DrawableObject {
   }
 
   IMAGES_LIFE = [
-    'img/4. Marcadores/Purple/life/0.png',
-    'img/4. Marcadores/Purple/life/20.png',
-    'img/4. Marcadores/Purple/life/40.png',
-    'img/4. Marcadores/Purple/life/60.png',
-    'img/4. Marcadores/Purple/life/80.png',
-    'img/4. Marcadores/orange/100_  copia.png',
+    'img/4. Marcadores/statusbar/life/0.png',
+    'img/4. Marcadores/statusbar/life/20.png',
+    'img/4. Marcadores/statusbar/life/40.png',
+    'img/4. Marcadores/statusbar/life/60.png',
+    'img/4. Marcadores/statusbar/life/80.png',
+    'img/4. Marcadores/statusbar/life/100.png',
   ];
 
   IMAGES_COINS = [
-    'img/4. Marcadores/Purple/coins/0.png',
-    'img/4. Marcadores/Purple/coins/20.png',
-    'img/4. Marcadores/Purple/coins/40.png',
-    'img/4. Marcadores/Purple/coins/60.png',
-    'img/4. Marcadores/Purple/coins/80.png',
-    'img/4. Marcadores/orange/100_ copia 2.png',
+    'img/4. Marcadores/statusbar/coin/0.png',
+    'img/4. Marcadores/statusbar/coin/20.png',
+    'img/4. Marcadores/statusbar/coin/40.png',
+    'img/4. Marcadores/statusbar/coin/60.png',
+    'img/4. Marcadores/statusbar/coin/80.png',
+    'img/4. Marcadores/statusbar/coin/100.png',
   ];
 
   IMAGES_POISON = [
-    'img/4. Marcadores/Purple/poison/0.png',
-    'img/4. Marcadores/Purple/poison/20.png',
-    'img/4. Marcadores/Purple/poison/40.png',
-    'img/4. Marcadores/Purple/poison/60.png',
-    'img/4. Marcadores/Purple/poison/80.png',
-    'img/4. Marcadores/green/poisoned bubbles/100_ copia 3.png',
+    'img/4. Marcadores/statusbar/poison/0.png',
+    'img/4. Marcadores/statusbar/poison/20.png',
+    'img/4. Marcadores/statusbar/poison/40.png',
+    'img/4. Marcadores/statusbar/poison/60.png',
+    'img/4. Marcadores/statusbar/poison/80.png',
+    'img/4. Marcadores/statusbar/poison/100.png',
   ];
 }

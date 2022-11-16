@@ -25,7 +25,7 @@ class Endboss extends MovableObject {
         if (this.i < 10) {
           this.playAnimation(this.IMAGES_INTRO);
         } else if (this.isDead()) {
-          this.endbossKilled(endboss_animation);
+          this.endbossKilled();
         } else if (this.isHurt()) {
           this.playAnimation(this.IMAGES_HURT);
         } else if (!this.isHurt() && this.distance() < 500) {
@@ -45,9 +45,8 @@ class Endboss extends MovableObject {
       this.y += 20;
     } else {
       this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-      clearAllIntervals();
       sounds.endbossMusic.pause();
-      this.winningScreen();
+      winner = true;
     }
     this.dead++;
   }
@@ -117,11 +116,12 @@ class Endboss extends MovableObject {
   ];
 
   IMAGES_DEAD = [
-    'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 6.png',
-    'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 7.png',
-    'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 8.png',
-    'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png',
-    'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png',
+    'img/2.Enemy/3 Final Enemy/Dead/5.png',
+    'img/2.Enemy/3 Final Enemy/Dead/6.png',
+    'img/2.Enemy/3 Final Enemy/Dead/7.png',
+    'img/2.Enemy/3 Final Enemy/Dead/8.png',
+    'img/2.Enemy/3 Final Enemy/Dead/9.png',
+    'img/2.Enemy/3 Final Enemy/Dead/10.png',
   ];
 
   IMAGES_ATTACK = [

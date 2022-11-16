@@ -83,15 +83,15 @@ class Pufferfish extends MovableObject {
   }
 
   IMAGES_GREEN = [
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png',
   ];
 
   IMAGES_GREEN_DEAD = [
-    'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.png',
   ];
 
   IMAGES_GREEN_AGRESSIVE = [
@@ -103,11 +103,11 @@ class Pufferfish extends MovableObject {
   ];
 
   IMAGES_PINK = [
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim3.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim4.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim5.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim3.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim4.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim5.png',
   ];
 
   IMAGES_PINK_DEAD = [
@@ -123,11 +123,11 @@ class Pufferfish extends MovableObject {
   ];
 
   IMAGES_REDBLUE = [
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim2.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim3.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim4.png',
-    '../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim2.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim3.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim4.png',
+    'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png',
   ];
 
   IMAGES_REDBLUE_AGRESSIVE = [
