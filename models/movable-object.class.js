@@ -16,7 +16,7 @@ class MovableObject extends DrawableObject {
   }
 
   applyUplift() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.y -= this.speedY;
       this.speedY += this.acceleration;
     }, 1000 / 60);
@@ -73,7 +73,7 @@ class MovableObject extends DrawableObject {
   }
 
   changeDirection(time) {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.otherDirection = !this.otherDirection;
     }, time);
   }

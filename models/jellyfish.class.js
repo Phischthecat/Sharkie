@@ -15,10 +15,10 @@ class Jellyfish extends MovableObject {
   }
 
   animate(type) {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.swim();
-    }, 1000 / 60);
-    setInterval(() => {
+    }, 16.67);
+    setStoppableInterval(() => {
       if (this.isKilled) {
         this.playAnimation(this.changeImagesByTypeDEAD(type));
       } else {

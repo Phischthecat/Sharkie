@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-  speed = 15;
+  speed = 5;
   world;
   isPaused = false;
   collectedCoins = 0;
@@ -26,7 +26,7 @@ class Character extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (!this.isDead()) {
         this.movingRight();
         this.movingLeft();
@@ -36,9 +36,10 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isDead()) {
         this.isDying();
+        stopGame();
       } else if (this.isHurt()) {
         this.isInjured();
       } else if (
@@ -139,21 +140,21 @@ class Character extends MovableObject {
   }
 
   isCollidingCharacterWithBarrier(side) {
-    // if (
-    //   this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[1]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[2]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[3]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[4]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[5]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[6]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[7]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[8]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[9]) != side &&
-    //   this.isCollidingWithBarrier(this.world.level.barriers[10]) != side
-    // ) {
-    return true;
-    // }
+    if (
+      this.isCollidingWithBarrier(this.world.level.barriers[0]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[1]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[2]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[3]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[4]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[5]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[6]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[7]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[8]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[9]) != side &&
+      this.isCollidingWithBarrier(this.world.level.barriers[10]) != side
+    ) {
+      return true;
+    }
   }
 
   shootBubbles() {
@@ -175,7 +176,11 @@ class Character extends MovableObject {
   }
 
   collectCoin() {
-    this.collectedCoins += 20;
+    this.collectedCoins += 10;
+    if (this.collectedCoins % 20 == 0) {
+      this.speed += 5;
+      console.log(this.speed);
+    }
     if (this.collectedCoins > 100) {
       this.collectedCoins = 100;
     }

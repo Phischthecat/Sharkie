@@ -22,7 +22,8 @@ class CollectableObject extends DrawableObject {
   collected = false;
 
   constructor(x, y, width, height, type) {
-    super().loadImages(this.changeImagesByType(type));
+    super().loadImage(this.changeImagesByType(type)[0]);
+    this.loadImages(this.changeImagesByType(type));
     this.x = x;
     this.y = y;
     this.width = width;
@@ -32,13 +33,13 @@ class CollectableObject extends DrawableObject {
   }
 
   animate(type) {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.playAnimation(this.changeImagesByType(type));
     }, 200);
   }
 
   goUp() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.collected) {
         this.y -= 40;
       }

@@ -12,12 +12,12 @@ class ShootableObject extends MovableObject {
   shoot() {
     this.speedY = 1;
     if (!world.character.otherDirection) {
-      setInterval(() => {
+      setStoppableInterval(() => {
         this.x += 5;
         this.y -= 0.1;
       }, 25);
     } else {
-      setInterval(() => {
+      setStoppableInterval(() => {
         this.x -= 5;
         this.y += 0.1;
       }, 25);

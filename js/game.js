@@ -1,6 +1,7 @@
 let canvas;
 let world;
-let keyboard;
+let keyboard = new Keyboard();
+let allIntervals = [];
 let gameOver = false;
 let winner = false;
 let sounds = {
@@ -22,16 +23,32 @@ let sounds = {
 
 function init() {
   canvas = document.getElementById('canvas');
-  keyboard = new Keyboard();
+  initLevel();
   world = new World(canvas, keyboard); //neue Welt mit der Variable canvas (das HTML Element), damit wir in der Welt das canvas zu greifen können
-
   soundSetting();
   console.log('My Character is ', world.character);
   console.log('enemies are ', world.level.enemies);
   console.log('barriers are ', world.level.barriers);
 }
 
+function restart() {
+  gameOver = false;
+  winner = false;
+  document.getElementById('loose').classList.add('d-none');
+  document.getElementById('win').classList.add('d-none');
+}
+
+function setStoppableInterval(fn, time) {
+  let idIntervall = setInterval(fn, time);
+  allIntervals.push(idIntervall);
+}
+
+function stopGame() {
+  allIntervals.forEach(clearInterval);
+}
+
 function start() {
+  init();
   document.querySelector('.startScreen').classList.add('slide-out-fwd-center');
   document.getElementById('btnsLeft').classList.remove('d-none');
   document.getElementById('btnsRight').classList.remove('d-none');
@@ -61,32 +78,19 @@ function openFullscreen() {
 function endScreen() {
   if (gameOver) {
     sounds.ambience.pause();
-    clearAllIntervals();
     document.getElementById('loose').classList.remove('d-none');
     document
       .querySelector('.startScreen')
       .classList.remove('slide-out-fwd-center', 'd-none');
   }
   if (winner) {
+    sounds.endbossMusic.pause();
     sounds.ambience.pause();
-    clearAllIntervals();
     document.getElementById('win').classList.remove('d-none');
     document
       .querySelector('.startScreen')
       .classList.remove('slide-out-fwd-center', 'd-none');
   }
-}
-
-function restart() {
-  gameOver = false;
-  winner = false;
-  init();
-  document.getElementById('loose').classList.add('d-none');
-  document.getElementById('win').classList.add('d-none');
-}
-
-function clearAllIntervals() {
-  for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
 function soundSetting() {

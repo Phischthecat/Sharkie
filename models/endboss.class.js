@@ -20,7 +20,7 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.hadFirstContact) {
         if (this.i < 10) {
           this.playAnimation(this.IMAGES_INTRO);
@@ -67,7 +67,7 @@ class Endboss extends MovableObject {
   }
 
   firstContact() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (world) {
         if (world.character.x > 4000 && !this.hadFirstContact) {
           this.i = 0;
@@ -77,7 +77,7 @@ class Endboss extends MovableObject {
           sounds.endbossMusic.play();
         }
       }
-    }, 1000 / 60);
+    }, 16.67);
   }
 
   IMAGES_INTRO = [

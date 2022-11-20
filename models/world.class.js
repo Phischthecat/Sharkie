@@ -21,6 +21,7 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
+    debugger;
     this.draw(); // "malt" die welt
     this.setWorld();
     this.run();
@@ -31,7 +32,7 @@ class World {
   }
 
   run() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       endScreen();
       this.isPufferfishAgressive();
       this.checkCollisions();
@@ -39,7 +40,7 @@ class World {
       this.showLifeStatusbarForEndboss();
       this.allStages();
     }, 200);
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.isCollidingWithOuterFramework();
     }, 1000 / 60);
   }
@@ -93,8 +94,9 @@ class World {
 
   showLifeStatusbarForEndboss() {
     if (this.character.x > 4000) {
+      let endboss = this.level.enemies.find((e) => e.species == 'endboss');
       this.statusBar.push(
-        new Statusbar(260, 400, 200, 75, 'life', this.level.enemies[18].energy)
+        new Statusbar(260, 400, 200, 75, 'life', endboss.energy)
       );
     }
   }
@@ -102,10 +104,10 @@ class World {
   isSlapCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
       if (
-        !this.character.isColliding(enemy) &&
+        !this.character.isHurt() &&
         this.character.isInFrontOf(enemy, 0, 0, 0, 50) &&
-        this.level.enemies[index].species.includes('Pufferfish') &&
-        this.keyboard.Q
+        enemy.species.includes('Pufferfish') &&
+        this.keyboard.D
       ) {
         this.killPufferfish(index);
         sounds.slap.play();
@@ -152,10 +154,10 @@ class World {
         this.character.isInFrontOf(enemy, 50, 50, 50, 50)
       ) {
         enemy.isAgressive = true;
-        enemy.offset = { top: 0, right: 5, bottom: 0, left: 0 };
+        enemy.offset.bottom = 0;
       } else {
         enemy.isAgressive = false;
-        enemy.offset = { top: 0, right: 5, bottom: 10, left: 0 };
+        enemy.offset.bottom = 10;
       }
     });
   }
@@ -181,9 +183,6 @@ class World {
         this.level.poisons[index].collected = true;
         sounds.collectPoisonBottle.play();
         this.stageSolved();
-        // setTimeout(() => {
-        //   this.level.poisons.splice(index, 1);
-        // }, 70);
         this.statusBar[2].setPercentage(this.character.collectedPoison);
       }
     });
@@ -259,7 +258,7 @@ class World {
 
   soundFadeOut(soundEffect) {
     sounds[soundEffect].play();
-    let fadeOut = setInterval(() => {
+    let fadeOut = setStoppableInterval(() => {
       if (sounds[soundEffect].volume > 0.01) {
         sounds[soundEffect].volume -= 0.01;
       } else {
