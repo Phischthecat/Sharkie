@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let allIntervals = [];
 let gameOver = false;
 let winner = false;
+let sound = true;
 let sounds = {
   swimming: new Audio('audio/swim.mp3'),
   collectCoin: new Audio('audio/coin.mp3'),
@@ -19,6 +20,8 @@ let sounds = {
   electroZap: new Audio('audio/zap.mp3'),
   fallingRock: new Audio('audio/falling-rocks.mp3'),
   movingPillar: new Audio('audio/moving-pillar.mp3'),
+  gameOver: new Audio('audio/gameOver.mp3'),
+  win: new Audio('audio/win.mp3'),
 };
 
 function init() {
@@ -26,14 +29,12 @@ function init() {
   initLevel();
   world = new World(canvas, keyboard); //neue Welt mit der Variable canvas (das HTML Element), damit wir in der Welt das canvas zu greifen können
   soundSetting();
-  console.log('My Character is ', world.character);
-  console.log('enemies are ', world.level.enemies);
-  console.log('barriers are ', world.level.barriers);
 }
 
 function restart() {
   gameOver = false;
   winner = false;
+  sound = true;
   document.getElementById('loose').classList.add('d-none');
   document.getElementById('win').classList.add('d-none');
 }
@@ -47,8 +48,8 @@ function stopGame() {
   allIntervals.forEach(clearInterval);
 }
 
-function start() {
-  init();
+async function start() {
+  await init();
   document.querySelector('.startScreen').classList.add('slide-out-fwd-center');
   document.getElementById('btnsLeft').classList.remove('d-none');
   document.getElementById('btnsRight').classList.remove('d-none');
@@ -62,30 +63,31 @@ function introduction() {
   document.body.classList.toggle('overflow-auto');
 }
 
-function openFullscreen() {
-  let gameContainer = document.getElementById('game-container');
-  if (gameContainer.requestFullscreen) {
-    gameContainer.requestFullscreen();
-  } else if (gameContainer.webkitRequestFullscreen) {
-    /* Safari */
-    gameContainer.webkitRequestFullscreen();
-  } else if (gameContainer.msRequestFullscreen) {
-    /* IE11 */
-    gameContainer.msRequestFullscreen();
-  }
+function endScreen() {
+  lose();
+  win();
 }
 
-function endScreen() {
+function lose() {
   if (gameOver) {
     sounds.ambience.pause();
+    sounds.endbossMusic.pause();
+    sounds.gameOver.play();
+    stopGame();
     document.getElementById('loose').classList.remove('d-none');
     document
       .querySelector('.startScreen')
       .classList.remove('slide-out-fwd-center', 'd-none');
   }
+}
+
+function win() {
   if (winner) {
     sounds.endbossMusic.pause();
+    sounds.endbossHurt.pause();
     sounds.ambience.pause();
+    sounds.win.play();
+    stopGame();
     document.getElementById('win').classList.remove('d-none');
     document
       .querySelector('.startScreen')
@@ -93,14 +95,30 @@ function endScreen() {
   }
 }
 
+function soundOn() {
+  document.getElementById('sound').onclick = soundOff;
+  document
+    .getElementById('soundIcon')
+    .classList.replace('fa-volume-xmark', 'fa-volume-high');
+  sound = true;
+}
+
+function soundOff() {
+  document.getElementById('sound').onclick = soundOn;
+  document
+    .getElementById('soundIcon')
+    .classList.replace('fa-volume-high', 'fa-volume-xmark');
+  sound = false;
+}
+
 function soundSetting() {
-  sounds.swimming.volume = 0.2;
-  sounds.collectCoin.volume = 0.7;
-  sounds.bubble.volume = 0.3;
-  sounds.collectPoisonBottle.volume = 0.7;
-  sounds.slap.volume = 0.3;
-  sounds.ambience.volume = 0.3;
+  sounds.ambience.volume = 0.5;
   sounds.ambience.loop = true;
+  sounds.swimming.volume = 0.15;
+  sounds.collectCoin.volume = 0.7;
+  sounds.collectPoisonBottle.volume = 0.9;
+  sounds.bubble.volume = 0.3;
+  sounds.slap.volume = 0.2;
   sounds.bubble_pop.volume = 0.3;
   sounds.hurt.volume = 0.1;
   sounds.endbossHurt.volume = 0.05;
@@ -108,7 +126,9 @@ function soundSetting() {
   sounds.endbossHurt.volume = 0.3;
   sounds.endbossMusic.volume = 0.3;
   sounds.endbossMusic.loop = true;
-  sounds.electroZap.volume = 0.3;
-  sounds.fallingRock.volume = 0.3;
-  sounds.movingPillar.volume = 0.8;
+  sounds.electroZap.volume = 0.1;
+  sounds.fallingRock.volume = 0.2;
+  sounds.movingPillar.volume = 0.4;
+  sounds.gameOver.volume = 0.3;
+  sounds.win.volume = 0.3;
 }

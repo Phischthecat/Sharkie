@@ -73,11 +73,18 @@ class Endboss extends MovableObject {
           this.i = 0;
           this.hadFirstContact = true;
           world.level.level_start_x = 4000;
-          sounds.ambience.pause();
-          sounds.endbossMusic.play();
         }
+        this.endbossMusic();
       }
-    }, 16.67);
+    }, 1000 / 60);
+  }
+
+  endbossMusic() {
+    if (sound && world.character.x > 4000) {
+      sounds.endbossMusic.play();
+    } else if (!sound && world.character.x > 4000) {
+      sounds.endbossMusic.pause();
+    }
   }
 
   IMAGES_INTRO = [

@@ -26,20 +26,11 @@ class Character extends MovableObject {
   }
 
   animate() {
-    setStoppableInterval(() => {
-      if (!this.isDead()) {
-        this.movingRight();
-        this.movingLeft();
-        this.movingTop();
-        this.movingDown();
-      }
-      this.world.camera_x = -this.x + 100;
-    }, 1000 / 60);
+    this.moving();
 
     setStoppableInterval(() => {
       if (this.isDead()) {
         this.isDying();
-        stopGame();
       } else if (this.isHurt()) {
         this.isInjured();
       } else if (
@@ -61,6 +52,18 @@ class Character extends MovableObject {
         this.attack = 0;
       }
     }, 150);
+  }
+
+  moving() {
+    setStoppableInterval(() => {
+      if (!this.isDead()) {
+        this.movingRight();
+        this.movingLeft();
+        this.movingTop();
+        this.movingDown();
+      }
+      this.world.camera_x = -this.x + 100;
+    }, 1000 / 60);
   }
 
   isDying() {
@@ -90,7 +93,6 @@ class Character extends MovableObject {
         this.IMAGES_DEAD_ELECTRO[this.IMAGES_DEAD_ELECTRO.length - 1]
       );
       this.y = 200;
-
       gameOver = true;
     }
   }
@@ -178,7 +180,7 @@ class Character extends MovableObject {
   collectCoin() {
     this.collectedCoins += 10;
     if (this.collectedCoins % 20 == 0) {
-      this.speed += 5;
+      this.speed += 1;
       console.log(this.speed);
     }
     if (this.collectedCoins > 100) {

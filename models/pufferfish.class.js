@@ -25,6 +25,11 @@ class Pufferfish extends MovableObject {
   }
 
   animate(type) {
+    this.moving();
+    this.imagesByStatus(type);
+  }
+
+  moving() {
     setStoppableInterval(() => {
       if (this.isKilled) {
         this.x -= 15;
@@ -32,7 +37,10 @@ class Pufferfish extends MovableObject {
       } else {
         this.swim();
       }
-    }, 16.67);
+    }, 1000 / 60);
+  }
+
+  imagesByStatus(type) {
     setStoppableInterval(() => {
       if (this.isAgressive) {
         this.playAnimation(this.changeImagesByTypeAGRESSIVE(type));

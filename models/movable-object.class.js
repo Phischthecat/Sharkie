@@ -122,7 +122,7 @@ class MovableObject extends DrawableObject {
   }
   minDistY(barrier) {
     // Calculate the minimum distance to Y
-    return this.height / 2 - this.offset.bottom + barrier.height / 2;
+    return this.height / 6 - this.offset.bottom + barrier.height / 2;
   }
 
   depthX(barrier) {

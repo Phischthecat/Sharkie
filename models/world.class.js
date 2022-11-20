@@ -1,30 +1,30 @@
 class World {
   character = new Character();
+  framework1 = { x: -100, y: 0, w: 5000, h: 20 };
+  framework2 = { x: -100, y: 460, w: 5000, h: 20 };
   level = level1;
   canvas;
   ctx;
   keyboard;
   camera_x = 0;
+  firstStageSolved = false;
+  secondStageSolved = false;
+  thirdStageSolved = false;
+  shootableObjects = [];
   statusBar = [
     new Statusbar(20, -10, 150, 50, 'life', 100),
     new Statusbar(20, 40, 150, 50, 'coins', 0),
     new Statusbar(20, 90, 150, 50, 'poison', 0),
   ];
-  shootableObjects = [];
-  framework1 = { x: -100, y: 0, w: 5000, h: 20 };
-  framework2 = { x: -100, y: 460, w: 5000, h: 20 };
-  firstStageSolved = false;
-  secondStageSolved = false;
-  thirdStageSolved = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-    debugger;
     this.draw(); // "malt" die welt
     this.setWorld();
     this.run();
+    this.backgroundSound();
   }
 
   setWorld() {
@@ -42,6 +42,16 @@ class World {
     }, 200);
     setStoppableInterval(() => {
       this.isCollidingWithOuterFramework();
+    }, 1000 / 60);
+  }
+
+  backgroundSound() {
+    setStoppableInterval(() => {
+      if (sound && this.character.x < 4000) {
+        sounds.ambience.play();
+      } else {
+        sounds.ambience.pause();
+      }
     }, 1000 / 60);
   }
 
@@ -118,21 +128,25 @@ class World {
   isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
       if (this.character.isColliding(enemy, index) && !enemy.isKilled) {
-        if (enemy.species == 'endboss') {
-          this.character.hit(5);
-        } else if (enemy.species == 'Jellyfish pink') {
-          this.character.hit(2.5);
-          this.character.electroHit = true;
-          sounds.electroZap.play();
-        } else if (enemy.species.includes('Jellyfish')) {
-          this.character.hit(1.5);
-        } else if (enemy.species.includes('Pufferfish')) {
-          this.character.hit(0.5);
-        }
+        this.collisionBySpecies(enemy);
         sounds.hurt.play();
       }
       this.statusBar[0].setPercentage(this.character.energy);
     });
+  }
+
+  collisionBySpecies(enemy) {
+    if (enemy.species == 'endboss') {
+      this.character.hit(5);
+    } else if (enemy.species == 'Jellyfish pink') {
+      this.character.hit(2.5);
+      this.character.electroHit = true;
+      sounds.electroZap.play();
+    } else if (enemy.species.includes('Jellyfish')) {
+      this.character.hit(1.5);
+    } else if (enemy.species.includes('Pufferfish')) {
+      this.character.hit(0.5);
+    }
   }
 
   isCollidingWithOuterFramework() {
@@ -168,9 +182,6 @@ class World {
         this.character.collectCoin();
         this.level.coins[index].collected = true;
         sounds.collectCoin.play();
-        setTimeout(() => {
-          this.level.coins.splice(index, 1);
-        }, 150);
         this.statusBar[1].setPercentage(this.character.collectedCoins);
       }
     });
@@ -195,7 +206,13 @@ class World {
     if (this.level.poisons[1].collected && this.level.poisons[2].collected) {
       this.secondStageSolved = true;
     }
-    if (
+    if (this.thirdStagePoisonBottles()) {
+      this.thirdStageSolved = true;
+    }
+  }
+
+  thirdStagePoisonBottles() {
+    return (
       this.level.poisons[3].collected &&
       this.level.poisons[4].collected &&
       this.level.poisons[5].collected &&
@@ -203,9 +220,7 @@ class World {
       this.level.poisons[7].collected &&
       this.level.poisons[8].collected &&
       this.level.poisons[9].collected
-    ) {
-      this.thirdStageSolved = true;
-    }
+    );
   }
 
   allStages() {

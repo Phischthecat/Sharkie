@@ -151,10 +151,16 @@ function initLevel() {
       new BackgroundObjects('img/3. Background/Layers/1. Light/2.png', 719 * 7),
     ],
     [
+      new CollectableObject(350, 20, 40, 40, 'coin'),
       new CollectableObject(400, 20, 40, 40, 'coin'),
       new CollectableObject(750, 200, 40, 40, 'coin'),
+      new CollectableObject(810, 135, 40, 40, 'coin'),
+      new CollectableObject(810, 265, 40, 40, 'coin'),
       new CollectableObject(870, 200, 40, 40, 'coin'),
-      new CollectableObject(1920, 140, 40, 40, 'coin'),
+      new CollectableObject(1750, 20, 40, 40, 'coin'),
+      new CollectableObject(2000, 140, 40, 40, 'coin'),
+      new CollectableObject(2750, 50, 40, 40, 'coin'),
+      new CollectableObject(2900, 400, 40, 40, 'coin'),
     ],
     [
       new CollectableObject(230, 310, 60, 50, 'poisonBottle'),
