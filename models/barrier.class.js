@@ -1,4 +1,10 @@
 class Barrier extends MovableObject {
+  IMAGES_BARRIER = [
+    'img/3. Background/Barrier/top.png',
+    'img/3. Background/Barrier/bottom.png',
+    'img/3. Background/Barrier/pillar.png',
+    'img/3. Background/Barrier/rock.png',
+  ];
   offset = {
     top: 30,
     right: 25,
@@ -13,7 +19,12 @@ class Barrier extends MovableObject {
     this.width = width;
     this.height = height;
   }
-
+  /**
+   * Calculates the y coordinate hand of the side and the height
+   * @param {string} side choose between 'top' & 'bottom'
+   * @param {number} height height of the objebt
+   * @returns Y-axis coordinate
+   */
   calcY(side, height) {
     if (side == 'down') {
       return 480 - height;
@@ -22,6 +33,11 @@ class Barrier extends MovableObject {
     }
   }
 
+  /**
+   * change the picture by means of the type
+   * @param {string} type type of the barrier
+   * @returns number of the image
+   */
   changeImageByType(type) {
     if (type == 'top') {
       return 0;
@@ -33,11 +49,4 @@ class Barrier extends MovableObject {
       return 3;
     }
   }
-
-  IMAGES_BARRIER = [
-    'img/3. Background/Barrier/top.png',
-    'img/3. Background/Barrier/bottom.png',
-    'img/3. Background/Barrier/pillar.png',
-    'img/3. Background/Barrier/rock.png',
-  ];
 }

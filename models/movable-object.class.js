@@ -15,6 +15,9 @@ class MovableObject extends DrawableObject {
     super();
   }
 
+  /**
+   * symolises the buoyancy
+   */
   applyUplift() {
     setStoppableInterval(() => {
       this.y -= this.speedY;
@@ -22,6 +25,11 @@ class MovableObject extends DrawableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * checks whether an object collides with another object
+   * @param {object} mo the movable, collided object
+   * @returns boolean
+   */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left && // => right > left
@@ -31,6 +39,15 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * checks if an object is in front of another object
+   * @param {object} mo the movable object in front of
+   * @param {number} offset_top from mo an offset for the top
+   * @param {number} offset_right for mo an offset for the right
+   * @param {number} offset_bottom for mo an offset for the bottom
+   * @param {number} offset_left for mo an offset for the left
+   * @returns boolean
+   */
   isInFrontOf(mo, offset_top, offset_right, offset_bottom, offset_left) {
     return (
       this.x + this.width - this.offset.right > mo.x - offset_left &&
@@ -40,6 +57,11 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * check if an object is colliding with the barrier
+   * @param {object} barrier a barrier object for the level
+   * @returns boolean
+   */
   isCollidingWithBarrier(barrier) {
     if (this.isColliding(barrier)) {
       if (this.depthX(barrier) != 0 && this.depthY(barrier) != 0) {
@@ -57,6 +79,10 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * if an object is hitted, it looses the amount of hit points as energy
+   * @param {number} hitPoints indicates the amount of hit points
+   */
   hit(hitPoints) {
     this.energy -= hitPoints;
     if (this.energy < 0) {
@@ -66,74 +92,132 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * checks whether an object is violated and runs a timer
+   * @returns boolean
+   */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit; // Difference in ms
     timePassed = timePassed / 1000; //Difference in s
     return timePassed < 1.2;
   }
 
+  /**
+   * changes the moving direction of an object by time
+   * @param {number} time time of the interval. triggers the funktion.
+   */
   changeDirection(time) {
     setStoppableInterval(() => {
       this.otherDirection = !this.otherDirection;
     }, time);
   }
 
+  /**
+   * checks if an object is dead (energy at 0)
+   * @returns boolean
+   */
   isDead() {
     return this.energy == 0;
   }
 
+  /**
+   * moves an object to the Right
+   */
   moveRight() {
     this.x += this.speed;
   }
 
+  /**
+   * moves an object to the Left
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * moves an object to the Top
+   */
   moveUp() {
     this.y -= this.speed;
   }
 
+  /**
+   * moves an object to the Bottom
+   */
   moveDown() {
     this.y += this.speed;
   }
 
+  /**
+   * calculates the distance on the x axis from the centre of an object to the centre of the barrier
+   * @param {object} barrier
+   * @returns boolean
+   */
   diffX(barrier) {
     return this.centerX() - barrier.centerX();
   }
 
+  /**
+   * calculates the centre on the x axis of an object
+   * @returns boolean
+   */
   centerX() {
-    // Calculate the distance between centers
     return this.x + this.width / 2 - this.offset.right;
   }
 
+  /**
+   * Calculates the distance on the y axis from the centre of an object to the centre of the barrier.
+   * @param {object} barrier
+   * @returns boolean
+   */
   diffY(barrier) {
     return this.centerY() - barrier.centerY();
   }
 
+  /**
+   * calculates the centre on the y axis of an object
+   * @returns boolean
+   */
   centerY() {
-    // Calculate the distance between centers
     return this.y + this.height / 2 - this.offset.bottom;
   }
 
+  /**
+   * calculates the minimum distance on the x axis to a barrier
+   * @param {object} barrier
+   * @returns boolean
+   */
   minDistX(barrier) {
-    // Calculate the minimum distance to X
     return this.width / 2 - this.offset.right + barrier.width / 2;
   }
+
+  /**
+   * calculates the minimum distance on the y axis to a barrier
+   * @param {object} barrier
+   * @returns boolean
+   */
   minDistY(barrier) {
     // Calculate the minimum distance to Y
     return this.height / 6 - this.offset.bottom + barrier.height / 2;
   }
 
+  /**
+   * calculates the depth of collision for the X axis
+   * @param {object} barrier
+   * @returns boolean
+   */
   depthX(barrier) {
-    // Calculate the depth of collision for the X axis
     return this.diffX(barrier) > 0
       ? this.minDistX(barrier) - this.diffX(barrier)
       : -this.minDistX(barrier) - this.diffX(barrier);
   }
 
+  /**
+   * calculate the depth of collision for the Y axis
+   * @param {object} barrier
+   * @returns boolean
+   */
   depthY(barrier) {
-    // Calculate the depth of collision for the Y axis
     return this.diffY(barrier) > 0
       ? this.minDistY(barrier) - this.diffY(barrier)
       : -this.minDistY(barrier) - this.diffY(barrier);

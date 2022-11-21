@@ -32,12 +32,19 @@ class CollectableObject extends DrawableObject {
     this.goUp();
   }
 
+  /**
+   * animates the collectable object
+   * @param {string} type type of collectable object
+   */
   animate(type) {
     setStoppableInterval(() => {
       this.playAnimation(this.changeImagesByType(type));
     }, 200);
   }
 
+  /**
+   * if a collectable object is collected, it moves up
+   */
   goUp() {
     setStoppableInterval(() => {
       if (this.collected) {
@@ -46,6 +53,11 @@ class CollectableObject extends DrawableObject {
     }, 75);
   }
 
+  /**
+   * changes the image by type
+   * @param {string} type type of collectable object
+   * @returns the image variable
+   */
   changeImagesByType(type) {
     if (type == 'coin') {
       return this.IMAGES_COIN;

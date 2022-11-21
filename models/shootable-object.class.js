@@ -9,6 +9,9 @@ class ShootableObject extends MovableObject {
     this.changeToPoisonBubble();
   }
 
+  /**
+   * moves the generated bubble
+   */
   shoot() {
     this.speedY = 1;
     if (!world.character.otherDirection) {
@@ -27,6 +30,9 @@ class ShootableObject extends MovableObject {
     }, 1500);
   }
 
+  /**
+   * changes the bubble color to poison bubble
+   */
   changeToPoisonBubble() {
     if (world.statusBar[2].percentage == 100) {
       this.loadImage(

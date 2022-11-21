@@ -19,10 +19,14 @@ class DrawableObject {
    * @param {string} path the relative path to the image
    */
   loadImage(path) {
-    this.img = new Image(); //entspricht this.img = document.getElementById('image') bzw. <img id="image">
+    this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * loads an array of images
+   * @param {array} arr array of images
+   */
   loadImages(arr) {
     try {
       arr.forEach((path) => {
@@ -36,6 +40,10 @@ class DrawableObject {
     }
   }
 
+  /**
+   * plays the animation by changing the image
+   * @param {array} images array of images
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -43,6 +51,10 @@ class DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * draws the image at the x and y coordinates with the width and height
+   * @param {object} ctx context of the canvas in 2d
+   */
   draw(ctx) {
     try {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -52,6 +64,10 @@ class DrawableObject {
     }
   }
 
+  /**
+   * draws a frame around an object
+   * @param {object} ctx context of the canvas in 2d
+   */
   drawFrame(ctx) {
     if (this instanceof Character || this instanceof Pufferfish) {
       ctx.beginPath();

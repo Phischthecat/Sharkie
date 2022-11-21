@@ -27,10 +27,16 @@ class World {
     this.backgroundSound();
   }
 
+  /**
+   * passes the world on to the character
+   */
   setWorld() {
     this.character.world = this; //übergibt die aktuelle instanz von world an alle movableObjects (aktuell nur character)
   }
 
+  /**
+   * plays all the important functions that need to be constantly checked
+   */
   run() {
     setStoppableInterval(() => {
       endScreen();
@@ -39,12 +45,15 @@ class World {
       this.createShootObjects();
       this.showLifeStatusbarForEndboss();
       this.allStages();
-    }, 200);
+    }, 150);
     setStoppableInterval(() => {
       this.isCollidingWithOuterFramework();
     }, 1000 / 60);
   }
 
+  /**
+   * plays the background sound
+   */
   backgroundSound() {
     setStoppableInterval(() => {
       if (sound && this.character.x < 4000) {
@@ -55,8 +64,11 @@ class World {
     }, 1000 / 60);
   }
 
+  /**
+   * creates a bubble
+   */
   createShootObjects() {
-    if (this.keyboard.SPACE && this.character.attack == 7) {
+    if (this.character.attack == this.character.IMAGES_BUBBLETRAP.length) {
       let bubble;
       if (!this.character.otherDirection) {
         bubble = new ShootableObject(
@@ -74,6 +86,9 @@ class World {
     }
   }
 
+  /**
+   * checks the most diverse collisions
+   */
   checkCollisions() {
     this.isCollidingWithEnemies();
     this.collisionWithCoins();
@@ -82,6 +97,9 @@ class World {
     this.isSlapCollidingWithEnemies();
   }
 
+  /**
+   * checks if a bubble collides with something
+   */
   isBubbleCollidingWithEnemies() {
     this.shootableObjects.forEach((bubble, indexB) => {
       this.level.enemies.forEach((enemy, indexE) => {
@@ -94,6 +112,10 @@ class World {
     });
   }
 
+  /**
+   * monitors whether the end boss has been hit
+   * @param {object} enemy collided enemy
+   */
   hitEndboss(enemy) {
     if (this.character.collectedPoison == 100 && enemy.species == 'endboss') {
       enemy.hit(10);
@@ -102,6 +124,9 @@ class World {
     }
   }
 
+  /**
+   * shows the life statusbar for the end boss
+   */
   showLifeStatusbarForEndboss() {
     if (this.character.x > 4000) {
       let endboss = this.level.enemies.find((e) => e.species == 'endboss');
@@ -111,6 +136,9 @@ class World {
     }
   }
 
+  /**
+   * checks whether an enemy has been slapped
+   */
   isSlapCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
       if (
@@ -125,6 +153,9 @@ class World {
     });
   }
 
+  /**
+   * checks whether the character collides with an enemy
+   */
   isCollidingWithEnemies() {
     this.level.enemies.forEach((enemy, index) => {
       if (this.character.isColliding(enemy, index) && !enemy.isKilled) {
@@ -135,6 +166,10 @@ class World {
     });
   }
 
+  /**
+   * awards the hit points on the basis of the collided enemy
+   * @param {object} enemy collided enemy
+   */
   collisionBySpecies(enemy) {
     if (enemy.species == 'endboss') {
       this.character.hit(5);
@@ -149,6 +184,9 @@ class World {
     }
   }
 
+  /**
+   * checks whether the jellyfishs collide with the outer frames
+   */
   isCollidingWithOuterFramework() {
     this.level.enemies.forEach((enemy) => {
       if (
@@ -161,6 +199,9 @@ class World {
     });
   }
 
+  /**
+   * checks whether the pufferfish become aggressive
+   */
   isPufferfishAgressive() {
     this.level.enemies.forEach((enemy) => {
       if (
@@ -176,6 +217,9 @@ class World {
     });
   }
 
+  /**
+   * checks whether the character collects a coin
+   */
   collisionWithCoins() {
     this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin, index)) {
@@ -187,6 +231,9 @@ class World {
     });
   }
 
+  /**
+   * checks whether the character collects a poison bottle
+   */
   collisionWithPoison() {
     this.level.poisons.forEach((poison, index) => {
       if (this.character.isColliding(poison, index)) {
@@ -199,6 +246,9 @@ class World {
     });
   }
 
+  /**
+   * checks whether the player has collected the required poison bottles to unlock the next stage
+   */
   stageSolved() {
     if (this.level.poisons[0].collected) {
       this.firstStageSolved = true;
@@ -211,6 +261,10 @@ class World {
     }
   }
 
+  /**
+   * Poison bottle to be collected from stage three
+   * @returns boolean
+   */
   thirdStagePoisonBottles() {
     return (
       this.level.poisons[3].collected &&
@@ -223,6 +277,9 @@ class World {
     );
   }
 
+  /**
+   * all four stages
+   */
   allStages() {
     this.firstStage();
     this.secondStage();
@@ -230,6 +287,9 @@ class World {
     this.endbossStage();
   }
 
+  /**
+   * move the pillar down when the first stage is completed
+   */
   firstStage() {
     if (this.firstStageSolved && this.level.barriers[1].y < 400) {
       this.level.barriers[1].y += 20;
@@ -238,6 +298,9 @@ class World {
     }
   }
 
+  /**
+   * move the pillar down when the second stage is completed
+   */
   secondStage() {
     if (this.secondStageSolved && this.level.barriers[6].y < 200) {
       this.level.barriers[6].y += 20;
@@ -246,6 +309,9 @@ class World {
     }
   }
 
+  /**
+   * move the pillars up and down when the second stage is completed
+   */
   thirdStage() {
     if (
       this.thirdStageSolved &&
@@ -259,6 +325,9 @@ class World {
     }
   }
 
+  /**
+   * closes the entrance behind the character
+   */
   endbossStage() {
     if (
       this.level.enemies[this.level.enemies.length - 1].hadFirstContact &&
@@ -271,6 +340,10 @@ class World {
     }
   }
 
+  /**
+   * Slowly turns down the sound
+   * @param {string} soundEffect
+   */
   soundFadeOut(soundEffect) {
     sounds[soundEffect].play();
     let fadeOut = setStoppableInterval(() => {
@@ -283,6 +356,9 @@ class World {
     }, 200);
   }
 
+  /**
+   * draws all objects on the canvas
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // löscht alle objects zu beginn
 
@@ -309,19 +385,30 @@ class World {
     });
   }
 
+  /**
+   * draws the object
+   * @param {object} mo movable object
+   */
   addToMap(mo) {
     this.flipImage(mo);
     mo.draw(this.ctx);
-    // mo.drawFrame(this.ctx);
     this.flipImageBack(mo);
   }
 
+  /**
+   * draws each object of the array
+   * @param {array} objects array of objects
+   */
   addObjectstoMap(objects) {
     objects.forEach((object) => {
       this.addToMap(object);
     });
   }
 
+  /**
+   * flips the image by changing the direction
+   * @param {object} mo movable object
+   */
   flipImage(mo) {
     if (mo.otherDirection) {
       this.ctx.save();
@@ -331,6 +418,10 @@ class World {
     }
   }
 
+  /**
+   * flips the image back by changing the direction
+   * @param {object} mo movable object
+   */
   flipImageBack(mo) {
     if (mo.otherDirection) {
       mo.x = mo.x * -1;
@@ -338,6 +429,10 @@ class World {
     }
   }
 
+  /**
+   * draws unvisible outer frameworks
+   * @param {object} fw object of frameworks
+   */
   drawFrameForCollision(fw) {
     this.ctx.beginPath();
     this.ctx.rect(fw.x, fw.y, fw.w, fw.h);
@@ -346,15 +441,24 @@ class World {
     this.ctx.stroke();
   }
 
+  /**
+   * bursts the bubble
+   * @param {number} index number of bubble
+   */
   bubbleBursts(index) {
     this.shootableObjects.splice(index, 1);
     sounds.bubble_pop.play();
   }
 
+  /**
+   * when the bubble encounters a jellyfish, it is caught and rises to the top
+   * @param {object} enemy collided enemy
+   * @param {number} index number of jellyfish
+   */
   killJellyfish(enemy, index) {
     if (enemy.species.includes('Jellyfish')) {
-      this.level.enemies[index].isKilled = true;
-      this.level.enemies[index].applyUplift();
+      enemy.isKilled = true;
+      enemy.applyUplift();
       sounds.deadJelly.play();
       setTimeout(() => {
         this.level.enemies.splice(index, 1);
@@ -362,6 +466,10 @@ class World {
     }
   }
 
+  /**
+   * if pufferfish hit by fin slap, he is shot out of the top right of the screen
+   * @param {number} index number of pufferfish
+   */
   killPufferfish(index) {
     this.level.enemies[index].isKilled = true;
     setTimeout(() => {
@@ -369,6 +477,12 @@ class World {
     }, 2500);
   }
 
+  /**
+   * checks if something collides with the framework
+   * @param {object} fw object of frameworks
+   * @param {object} mo movable object
+   * @returns boolean
+   */
   isCollidingFramework(fw, mo) {
     return (
       fw.x + fw.w > mo.x + mo.offset.left && // => right > left

@@ -24,6 +24,9 @@ let sounds = {
   win: new Audio('audio/win.mp3'),
 };
 
+/**
+ * initialises the game
+ */
 function init() {
   canvas = document.getElementById('canvas');
   initLevel();
@@ -31,6 +34,9 @@ function init() {
   soundSetting();
 }
 
+/**
+ * restarts the game
+ */
 function restart() {
   gameOver = false;
   winner = false;
@@ -39,15 +45,26 @@ function restart() {
   document.getElementById('win').classList.add('d-none');
 }
 
+/**
+ * auxiliary function to get the ids of the intervals and to set the interval
+ * @param {function} fn takes a function
+ * @param {number} time takes a time
+ */
 function setStoppableInterval(fn, time) {
   let idIntervall = setInterval(fn, time);
   allIntervals.push(idIntervall);
 }
 
+/**
+ * clears all intervals
+ */
 function stopGame() {
   allIntervals.forEach(clearInterval);
 }
 
+/**
+ * starts the game and hides the start screen
+ */
 async function start() {
   await init();
   document.querySelector('.startScreen').classList.add('slide-out-fwd-center');
@@ -58,16 +75,25 @@ async function start() {
   }, 200);
 }
 
+/**
+ * opens/ closes the information to the game
+ */
 function introduction() {
   document.getElementById('pop-up').classList.toggle('d-none');
   document.body.classList.toggle('overflow-auto');
 }
 
+/**
+ * shows the endscreen
+ */
 function endScreen() {
   lose();
   win();
 }
 
+/**
+ * shows the lose endscreen, stops the music and plays the gameOver music
+ */
 function lose() {
   if (gameOver) {
     sounds.ambience.pause();
@@ -81,6 +107,9 @@ function lose() {
   }
 }
 
+/**
+ * shows the win endscreen, stops the music and plays the win music
+ */
 function win() {
   if (winner) {
     sounds.endbossMusic.pause();
@@ -95,6 +124,9 @@ function win() {
   }
 }
 
+/**
+ * turns the background music on
+ */
 function soundOn() {
   document.getElementById('sound').onclick = soundOff;
   document
@@ -103,6 +135,9 @@ function soundOn() {
   sound = true;
 }
 
+/**
+ * turns the background music off
+ */
 function soundOff() {
   document.getElementById('sound').onclick = soundOn;
   document
@@ -111,6 +146,9 @@ function soundOff() {
   sound = false;
 }
 
+/**
+ * sets the volume of the game sounds
+ */
 function soundSetting() {
   sounds.ambience.volume = 0.5;
   sounds.ambience.loop = true;

@@ -11,6 +11,9 @@ class Keyboard {
     this.forMovingWithTouch();
   }
 
+  /**
+   * registers the pressed keys
+   */
   forMovingWithKeyboard() {
     window.addEventListener('keydown', (event) => {
       if (event.keyCode == 32) {
@@ -58,6 +61,9 @@ class Keyboard {
     });
   }
 
+  /**
+   * registers the touched keys
+   */
   forMovingWithTouch() {
     setTimeout(() => {
       document
