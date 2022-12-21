@@ -72,7 +72,7 @@ async function start() {
   document.getElementById('btnsRight').classList.remove('d-none');
   setTimeout(() => {
     document.querySelector('.startScreen').classList.add('d-none');
-  }, 200);
+  }, 700);
 }
 
 /**
@@ -81,6 +81,13 @@ async function start() {
 function introduction() {
   document.getElementById('pop-up').classList.toggle('d-none');
   document.body.classList.toggle('overflow-auto');
+}
+
+function closeShortIntroduction() {
+  document.querySelector('.short-introduction').classList.add('fadeOut');
+  setTimeout(() => {
+    document.querySelector('.short-introduction').classList.add('d-none');
+  }, 225);
 }
 
 /**

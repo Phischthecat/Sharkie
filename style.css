@@ -168,10 +168,7 @@ header i {
 
 .introduction-container {
   position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 40px;
+  inset: 40px;
   padding: 35px;
   overflow: auto;
   border-radius: 20px;
@@ -221,6 +218,67 @@ header i {
 .coins {
   width: 30px;
   height: 30px;
+}
+
+.short-introduction {
+  z-index: 2;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: auto;
+}
+
+.wrapper .info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.wrapper .info .arrow-keys {
+  height: 100px;
+  width: auto;
+}
+.wrapper .info .poison-bottle {
+  height: 100px;
+  width: auto;
+  margin: 0 !important;
+}
+.wrapper .info .coins {
+  height: 50px;
+  width: auto;
+}
+
+.subTitle {
+  font-size: 35px;
+}
+
+.fight-keys {
+  color: var(--btnTextColor);
+  font-size: 35px;
+  text-shadow: 2px 2px var(--btnBackgroundColor);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.collectables {
+  display: flex;
+  align-items: flex-end;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 225ms ease-in;
 }
 
 .game-container {
