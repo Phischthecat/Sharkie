@@ -39,10 +39,12 @@ class World {
    */
   run() {
     setStoppableInterval(() => {
+      this.createShootObjects();
+    }, 80);
+    setStoppableInterval(() => {
       endScreen();
       this.isPufferfishAgressive();
       this.checkCollisions();
-      this.createShootObjects();
       this.showLifeStatusbarForEndboss();
       this.allStages();
     }, 150);
@@ -145,7 +147,7 @@ class World {
         !this.character.isHurt() &&
         this.character.isInFrontOf(enemy, 0, 0, 0, 50) &&
         enemy.species.includes('Pufferfish') &&
-        this.keyboard.D
+        this.slap
       ) {
         this.killPufferfish(index);
         sounds.slap.play();

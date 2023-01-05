@@ -94,6 +94,8 @@ class Character extends MovableObject {
   collectedCoins = 0;
   collectedPoison = 0;
   electroHit = false;
+  shoot = false;
+  slap = false;
   offset = {
     top: 120,
     right: 40,
@@ -112,7 +114,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT_POISON);
     this.loadImages(this.IMAGES_HURT_ELECTRO);
     this.animate();
-    console.log(this.currentImage);
   }
 
   /**
@@ -120,6 +121,7 @@ class Character extends MovableObject {
    */
   animate() {
     this.moving();
+    this.attacking();
 
     setStoppableInterval(() => {
       if (this.isDead()) {
@@ -135,14 +137,13 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_SWIM);
         sounds.swimming.play();
       } else if (this.world.keyboard.SPACE) {
-        this.shootBubbles();
+        this.shoot = true;
       } else if (this.world.keyboard.D) {
-        this.slapEnemy();
-      } else {
+        this.slap = true;
+      } else if (!this.shoot && !this.slap) {
         this.playAnimation(this.IMAGES_IDLE);
         this.isPaused = false;
         this.electroHit = false;
-        this.attack = 0;
       }
     }, 150);
   }
@@ -160,6 +161,17 @@ class Character extends MovableObject {
       }
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
+  }
+
+  attacking() {
+    setStoppableInterval(() => {
+      if (this.shoot) {
+        this.shootBubbles();
+      }
+      if (this.slap) {
+        this.slapEnemy();
+      }
+    }, 80);
   }
 
   /**
@@ -288,11 +300,14 @@ class Character extends MovableObject {
    * plays the shooting bubble animation
    */
   shootBubbles() {
-    if (this.attack < 8) {
-      this.playAnimation(this.IMAGES_BUBBLETRAP);
+    if (this.attack < this.IMAGES_BUBBLETRAP.length) {
+      this.playAnimationOnce(this.IMAGES_BUBBLETRAP[this.attack]);
+      this.currentImage = this.attack;
       this.attack++;
+      console.log(this.attack);
     } else {
       this.attack = 0;
+      this.shoot = false;
     }
   }
 
@@ -301,11 +316,11 @@ class Character extends MovableObject {
    */
   slapEnemy() {
     if (this.attack < this.IMAGES_SLAP.length) {
-      this.playAnimation(this.IMAGES_SLAP);
+      this.playAnimationOnce(this.IMAGES_SLAP[this.attack]);
       this.attack++;
     } else {
       this.attack = 0;
-      this.currentImage = 0;
+      this.slap = false;
     }
   }
 
@@ -316,7 +331,6 @@ class Character extends MovableObject {
     this.collectedCoins += 10;
     if (this.collectedCoins % 20 == 0) {
       this.speed += 1;
-      console.log(this.speed);
     }
     if (this.collectedCoins > 100) {
       this.collectedCoins = 100;

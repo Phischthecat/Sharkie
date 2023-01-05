@@ -50,6 +50,13 @@ class DrawableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+  /**
+   * plays the animation by changing the image
+   * @param {array} images array of images
+   */
+  playAnimationOnce(currentPath) {
+    this.img = this.imageCache[currentPath];
+  }
 
   /**
    * draws the image at the x and y coordinates with the width and height
