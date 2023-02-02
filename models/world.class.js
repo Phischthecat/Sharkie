@@ -147,7 +147,7 @@ class World {
         !this.character.isHurt() &&
         this.character.isInFrontOf(enemy, 0, 0, 0, 50) &&
         enemy.species.includes('Pufferfish') &&
-        this.slap
+        this.character.slap
       ) {
         this.killPufferfish(index);
         sounds.slap.play();

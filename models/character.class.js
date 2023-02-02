@@ -304,7 +304,6 @@ class Character extends MovableObject {
       this.playAnimationOnce(this.IMAGES_BUBBLETRAP[this.attack]);
       this.currentImage = this.attack;
       this.attack++;
-      console.log(this.attack);
     } else {
       this.attack = 0;
       this.shoot = false;

@@ -36,7 +36,6 @@ class DrawableObject {
       });
     } catch (e) {
       console.warn('There is an error', e);
-      console.log('Could not load the image', img.src);
     }
   }
 
@@ -67,7 +66,6 @@ class DrawableObject {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     } catch (e) {
       console.warn('There is an error', e);
-      console.log('Could not load the image', this.img.src);
     }
   }
 
